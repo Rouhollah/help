@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
 import 'package:help/table_screen.dart';
 import 'package:help/trackFinger.dart';
@@ -125,7 +126,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                   builder: (context) => TablePage()),
                             );
                           }),
-                    )
+                    ),
+                    Container(
+                      height: 50,
+                      color: Colors.green[300],
+                      margin: EdgeInsets.all(8.0),
+                      child: MaterialButton(
+                          child: Text('Drag Page'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Drag()),
+                            );
+                          }),
+                    ),
                   ],
                 )
               ],

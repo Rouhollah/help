@@ -78,39 +78,49 @@ class _CustomTableState extends State<CustomTable> {
       children: [
         ...containers,
         Spacer(),
-        dragCursor(),
+        Container(
+          color: Colors.red[200],
+          child: dragCursor(),
+        ),
         SizedBox(
           height: 25,
-        )
+          child: Container(
+            color: Colors.amber,
+          ),
+        ),
       ],
     );
   }
 
   dragCursor() {
-    return Draggable(
-      child: Container(
-        padding: EdgeInsets.only(top: top, left: left),
-        width: 100.0,
-        height: 20,
-        color: Colors.green,
-        child: DragItem(),
+    this.left = MediaQuery.of(context).size.width / 2.toDouble();
+    Offset offset = new Offset(this.left, 0);
+    return Stack(children: [
+      Draggable(
+        child: Container(
+          width: 100.0,
+          height: 20,
+          color: Colors.green,
+          child: DragBox(offset),
+        ),
+        feedback: DragBox(offset),
+        childWhenDragging: DragBox(offset),
+        maxSimultaneousDrags: 1,
+        axis: Axis.horizontal,
+        onDragCompleted: () {},
+        onDragEnd: (drag) {
+          findPosition(drag);
+          // this.left = drag.offset.dx;
+        },
       ),
-      feedback: DragItem(),
-      childWhenDragging: DragItem(),
-      // maxSimultaneousDrags: 1,
-      axis: Axis.horizontal,
-      onDragCompleted: () {},
-      onDragEnd: (drag) {
-        print(left);
-        print("-------------");
-        //setState(() {
-        // top = drag.offset.dy;
-        left = drag.offset.dx;
-        //});
-        print(drag);
-        print(left);
-      },
-    );
+    ]);
+  }
+
+  findPosition(drag) {
+    setState(() {
+      // top = drag.offset.dy;
+      this.left = drag.offset.dx;
+    });
   }
 
   /// ایجاد ردیفهایی با تعداد تصادفی
@@ -179,5 +189,68 @@ class DragItem extends StatelessWidget {
       height: 20,
       color: Colors.blue[100],
     );
+  }
+}
+
+class DragBox extends StatefulWidget {
+  final Offset initPos;
+
+  DragBox(this.initPos) {
+    print(this.initPos);
+  }
+
+  @override
+  DragBoxState createState() => DragBoxState();
+}
+
+class DragBoxState extends State<DragBox> {
+  Offset position = Offset(0.0, 0.0);
+
+  @override
+  void initState() {
+    super.initState();
+    position = widget.initPos;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+        left: position.dx,
+        top: position.dy,
+        child: Draggable(
+          child: Container(
+            width: 100.0,
+            height: 100.0,
+            child: Center(
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.none,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ),
+          onDraggableCanceled: (velocity, offset) {
+            setState(() {
+              position = offset;
+            });
+          },
+          feedback: Container(
+            width: 120.0,
+            height: 120.0,
+            child: Center(
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.none,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }
