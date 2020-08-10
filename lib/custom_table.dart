@@ -1,17 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-class TablePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Draggable',
-        home: Scaffold(
-          body: CustomTable(),
-        ));
-  }
-}
+import 'package:help/trackFinger.dart';
 
 class CustomTable extends StatefulWidget {
   @override
@@ -20,29 +10,9 @@ class CustomTable extends StatefulWidget {
 
 class _CustomTableState extends State<CustomTable> {
   Random random = new Random();
-  double top = 0;
-  double left = 0;
   Offset offset = Offset.zero;
   @override
   Widget build(BuildContext context) {
-    // return Stack(
-    //   children: <Widget>[
-    //     Positioned(
-    //       left: offset.dx,
-    //       top: offset.dy,
-    //       child: GestureDetector(
-    //         onPanUpdate: (details) {
-    //           setState(() {
-    //             offset = Offset(
-    //                 offset.dx + details.delta.dx, offset.dy + details.delta.dy);
-    //             print(offset);
-    //           });
-    //         },
-    //         child: Container(width: 100, height: 100, color: Colors.blue),
-    //       ),
-    //     ),
-    //   ],
-    // );
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
@@ -74,53 +44,17 @@ class _CustomTableState extends State<CustomTable> {
       );
       containers.add(container);
     }
-    return Column(
-      children: [
+    return Column(children: [
+      Column(children: [
         ...containers,
-        Spacer(),
-        Container(
-          color: Colors.red[200],
-          child: dragCursor(),
-        ),
-        SizedBox(
-          height: 25,
-          child: Container(
-            color: Colors.amber,
-          ),
-        ),
-      ],
-    );
-  }
-
-  dragCursor() {
-    this.left = MediaQuery.of(context).size.width / 2.toDouble();
-    Offset offset = new Offset(this.left, 0);
-    return Stack(children: [
-      Draggable(
-        child: Container(
-          width: 100.0,
-          height: 20,
-          color: Colors.green,
-          child: DragBox(offset),
-        ),
-        feedback: DragBox(offset),
-        childWhenDragging: DragBox(offset),
-        maxSimultaneousDrags: 1,
-        axis: Axis.horizontal,
-        onDragCompleted: () {},
-        onDragEnd: (drag) {
-          findPosition(drag);
-          // this.left = drag.offset.dx;
-        },
+      ]),
+      Spacer(),
+      //TrackFinger(),
+      SizedBox(
+        height: 70,
+        child: TrackFinger(),
       ),
     ]);
-  }
-
-  findPosition(drag) {
-    setState(() {
-      // top = drag.offset.dy;
-      this.left = drag.offset.dx;
-    });
   }
 
   /// ایجاد ردیفهایی با تعداد تصادفی
@@ -175,13 +109,6 @@ class _CustomTableState extends State<CustomTable> {
     int num = min + random.nextInt(max - min);
     return num;
   }
-}
-
-class DragItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return blueCursor();
-  }
 
   Container blueCursor() {
     return Container(
@@ -190,67 +117,46 @@ class DragItem extends StatelessWidget {
       color: Colors.blue[100],
     );
   }
-}
 
-class DragBox extends StatefulWidget {
-  final Offset initPos;
+//   Widget dragCorsur() {
+//     return new GestureDetector(
+//       onTapDown: (TapDownDetails details) => onTapDown(context, details),
+//       child: new Stack(fit: StackFit.expand, children: <Widget>[
+//         // Hack to expand stack to fill all the space. There must be a better
+//         // way to do it.
+//         new Container(
+//           height: 200,
+//           color: Colors.green,
+//         ),
+//         new Positioned(
+//           child: cursor(),
+//           left: posx,
+//           top: posy,
+//         )
+//       ]),
+//     );
+//   }
 
-  DragBox(this.initPos) {
-    print(this.initPos);
-  }
+//   void onTapDown(BuildContext context, TapDownDetails details) {
+//     final RenderBox box = context.findRenderObject();
+//     final Offset localOffset = box.globalToLocal(details.globalPosition);
+//     setState(() {
+//       double rEdge = calculateSpaceToEdges();
+//       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
+//       posy = MediaQuery.of(context).size.height - 100;
+//     });
+//   }
 
-  @override
-  DragBoxState createState() => DragBoxState();
-}
+//   Container cursor() {
+//     return Container(
+//       color: Colors.brown[300],
+//       height: 20,
+//       width: 100,
+//     );
+//   }
 
-class DragBoxState extends State<DragBox> {
-  Offset position = Offset(0.0, 0.0);
-
-  @override
-  void initState() {
-    super.initState();
-    position = widget.initPos;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-        left: position.dx,
-        top: position.dy,
-        child: Draggable(
-          child: Container(
-            width: 100.0,
-            height: 100.0,
-            child: Center(
-              child: Text(
-                '',
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
-                  fontSize: 20.0,
-                ),
-              ),
-            ),
-          ),
-          onDraggableCanceled: (velocity, offset) {
-            setState(() {
-              position = offset;
-            });
-          },
-          feedback: Container(
-            width: 120.0,
-            height: 120.0,
-            child: Center(
-              child: Text(
-                '',
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
-                  fontSize: 18.0,
-                ),
-              ),
-            ),
-          ),
-        ));
-  }
+//   calculateSpaceToEdges() {
+//     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
+//     return rightEdge;
+//   }
 }
