@@ -57,7 +57,7 @@ class _CustomTableState extends State<CustomTable> {
     ]);
   }
 
-  /// ایجاد ردیفهایی با تعداد تصادفی
+  /// ایجاد یک ردیف با تعداد ستون تصادفی
   Widget createRowWithrandomColumns() {
     List<Widget> cols = randomColumns();
     return Row(mainAxisAlignment: MainAxisAlignment.center,
@@ -78,6 +78,7 @@ class _CustomTableState extends State<CustomTable> {
     int cols = generateRandomNumber();
     List<Widget> columns = new List<Widget>();
     for (var i = 0; i < cols; i++) {
+      var key = new GlobalKey(debugLabel: i.toString());
       Column col = Column(
         children: [
           Container(
