@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:help/ball.dart';
+import 'package:help/cursor.dart';
 
 class TrackFinger extends StatefulWidget {
   @override
@@ -12,12 +14,15 @@ class _TrackFingerState extends State<TrackFinger> {
   //window.physicalSize.width = 1280
   //window.devicePixelRatio = 2
   // cursor() / 2 =>  50
-  double posx = (window.physicalSize.width / window.devicePixelRatio) / 2 - 50;
-  double posy = 5.0;
-
+  double posx = (window.physicalSize.width / window.devicePixelRatio) - 50;
+  double posy = 25.0;
+  Cursor cursor = new Cursor();
+  Ball ball = new Ball();
   @override
   Widget build(BuildContext context) {
-    print('${window.physicalSize.height / window.devicePixelRatio}');
+    print('${window.physicalSize.width}');
+    print('${window.physicalSize.width / window.devicePixelRatio}');
+    print('${window.physicalSize.width / window.devicePixelRatio / 2}');
     print('${window.physicalSize.height}');
     print('${window.devicePixelRatio}');
     return _body();
@@ -28,13 +33,14 @@ class _TrackFingerState extends State<TrackFinger> {
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
       child: new Stack(children: <Widget>[
         new Container(
-          color: Colors.white10,
+          color: Colors.purple,
         ),
         new Positioned(
-          child: cursor(),
+          child: createCursor(),
           left: posx,
-          top: posy,
+          top: 30.0,
         ),
+        createBall(),
       ]),
     );
   }
@@ -55,11 +61,29 @@ class _TrackFingerState extends State<TrackFinger> {
     });
   }
 
-  Container cursor() {
+  Container createCursor() {
     return Container(
-      color: Colors.blue[300],
-      height: 20,
-      width: 100,
+      color: cursor.color,
+      height: cursor.height,
+      width: cursor.width,
+    );
+  }
+
+  /// توپ
+  Positioned createBall() {
+    Cursor cursor = new Cursor();
+    Ball ball = new Ball();
+    return Positioned(
+      top: ball.height - cursor.height,
+      left: posx + cursor.width / 2 - ball.width / 2,
+      child: Container(
+        width: ball.width,
+        height: ball.height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.green[400],
+        ),
+      ),
     );
   }
 

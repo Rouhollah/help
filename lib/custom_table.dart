@@ -54,7 +54,6 @@ class _CustomTableState extends State<CustomTable> {
         ...containers,
       ]),
       Spacer(),
-      //TrackFinger(),
       SizedBox(
         height: 70,
         child: TrackFinger(),
@@ -65,17 +64,13 @@ class _CustomTableState extends State<CustomTable> {
   /// ایجاد یک ردیف با تعداد ستون تصادفی
   Widget createRowWithrandomColumns() {
     List<Widget> cols = randomColumns();
-    return Row(mainAxisAlignment: MainAxisAlignment.center,
-        //crossAxisAlignment: CrossAxisAlignment.end,
-        //mainAxisSize: MainAxisSize.max,
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...cols,
-          SizedBox(
-            width: 5,
-            height: 10,
-          )
-        ]);
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      ...cols,
+      SizedBox(
+        width: 5,
+        height: 10,
+      )
+    ]);
   }
 
   /// ایجاد ستون هایی با تعداد و رنگ تصادفی همراه با فاصله بین آنها ، عمودی و افقی
@@ -84,8 +79,9 @@ class _CustomTableState extends State<CustomTable> {
     List<Widget> columns = new List<Widget>();
     for (var i = 0; i < cols; i++) {
       // var _key = new GlobalKey(debugLabel: i.toString());
+      GlobalKey _key = new GlobalKey();
       Column col = Column(
-        //  key: _key,
+        key: _key,
         children: [
           Container(
             height: 50.0,
@@ -116,54 +112,4 @@ class _CustomTableState extends State<CustomTable> {
     int num = min + random.nextInt(max - min);
     return num;
   }
-
-  Container blueCursor() {
-    return Container(
-      width: 100.0,
-      height: 20,
-      color: Colors.blue[100],
-    );
-  }
-
-//   Widget dragCorsur() {
-//     return new GestureDetector(
-//       onTapDown: (TapDownDetails details) => onTapDown(context, details),
-//       child: new Stack(fit: StackFit.expand, children: <Widget>[
-//         // Hack to expand stack to fill all the space. There must be a better
-//         // way to do it.
-//         new Container(
-//           height: 200,
-//           color: Colors.green,
-//         ),
-//         new Positioned(
-//           child: cursor(),
-//           left: posx,
-//           top: posy,
-//         )
-//       ]),
-//     );
-//   }
-
-//   void onTapDown(BuildContext context, TapDownDetails details) {
-//     final RenderBox box = context.findRenderObject();
-//     final Offset localOffset = box.globalToLocal(details.globalPosition);
-//     setState(() {
-//       double rEdge = calculateSpaceToEdges();
-//       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
-//       posy = MediaQuery.of(context).size.height - 100;
-//     });
-//   }
-
-//   Container cursor() {
-//     return Container(
-//       color: Colors.brown[300],
-//       height: 20,
-//       width: 100,
-//     );
-//   }
-
-//   calculateSpaceToEdges() {
-//     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
-//     return rightEdge;
-//   }
 }
