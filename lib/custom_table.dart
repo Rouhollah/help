@@ -39,6 +39,11 @@ class _CustomTableState extends State<CustomTable> {
     List<Container> containers = new List<Container>();
     for (var i = 0; i < rowCount; i++) {
       Row row = createRowWithrandomColumns();
+      // for (int j = 0; j < row.children.length; j++) {
+      //   var key = new GlobalKey();
+      //   row.children[j].key = key;
+      // }
+
       Container container = new Container(
         child: row,
       );
@@ -78,8 +83,9 @@ class _CustomTableState extends State<CustomTable> {
     int cols = generateRandomNumber();
     List<Widget> columns = new List<Widget>();
     for (var i = 0; i < cols; i++) {
-      var key = new GlobalKey(debugLabel: i.toString());
+      // var _key = new GlobalKey(debugLabel: i.toString());
       Column col = Column(
+        //  key: _key,
         children: [
           Container(
             height: 50.0,
