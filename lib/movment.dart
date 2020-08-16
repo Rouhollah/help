@@ -26,7 +26,8 @@ class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
     controller =
         AnimationController(duration: const Duration(seconds: 5), vsync: this);
     // #docregion addListener
-    animation = RectTween(begin: r1, end: r2).animate(controller)
+    //animation = RectTween(begin: r1, end: r2).animate(controller)
+    animation = Tween<Offset>(begin: _start, end: _end).animate(controller)
       ..addListener(() {
         // #enddocregion addListener
         setState(() {
@@ -59,53 +60,62 @@ class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
     //     child: FlutterLogo(),
     //   ),
     // );
-    return Stack(
-      // fit: StackFit.expand,
-      children: [
-        Positioned.fromRect(
-          rect: r1,
-          //top: _top,
-          //left: _left,
-          child: Container(
-            // width: 50,
-            // height: 50,
-            color: Colors.green[100],
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: RaisedButton(
-            onPressed: move,
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.green,
-              width: 100,
-              height: 50,
-              child: Text(
-                "move",
-                style: TextStyle(color: Colors.white, fontSize: 16.0),
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-    // return SafeArea(
-    //     child: SlideTransition(
-    //   position: _animation,
-    //   child: Center(
-    //       child: Text(
-    //     "My Text",
-    //     style: TextStyle(fontSize: 20),
-    //   )),
-    // ));
+    // return Stack(
+    //   // fit: StackFit.expand,
+    //   children: [
+    //     // Positioned.fromRect(
+    //     //   rect: r1,
+    //     //   //top: _top,
+    //     //   //left: _left,
+    //     //   child: Container(
+    //     //     // width: 50,
+    //     //     // height: 50,
+    //     //     color: Colors.green[100],
+    //     //   ),
+    //     // ),
+    //     Positioned(
+    //       top: _top,
+    //       left: _left,
+    //       child: Container(
+    //         width: 50,
+    //         height: 50,
+    //         color: Colors.green[100],
+    //       ),
+    //     ),
+    //     Align(
+    //       alignment: Alignment.bottomCenter,
+    //       child: RaisedButton(
+    //         onPressed: move,
+    //         child: Container(
+    //           alignment: Alignment.center,
+    //           color: Colors.green,
+    //           width: 100,
+    //           height: 50,
+    //           child: Text(
+    //             "move",
+    //             style: TextStyle(color: Colors.white, fontSize: 16.0),
+    //           ),
+    //         ),
+    //       ),
+    //     )
+    //   ],
+    // );
+    return SafeArea(
+        child: SlideTransition(
+      position: animation,
+      child: Center(
+          child: Text(
+        "My Text",
+        style: TextStyle(fontSize: 20),
+      )),
+    ));
   }
 
   move() {
     setState(() {
-      // _top = 160;
-      // _left = 300;
-      r1 = r2;
+      _top = 160;
+      _left = 300;
+      //r1 = r2;
     });
   }
 
