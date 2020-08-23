@@ -7,4 +7,6 @@ class Ball extends Cursor {
   double get width => 25.0;
   double get height => 25.0;
   Color get color => Colors.green[300];
+  double leftPosition;
+  double topPosition;
 }

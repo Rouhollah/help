@@ -18,7 +18,8 @@ class _TrackFingerState extends State<TrackFinger>
   //window.physicalSize.width = 1280
   //window.devicePixelRatio = 2
   // cursor() / 2 =>  50
-  double posx = (window.physicalSize.width / window.devicePixelRatio) - 50;
+  double posx = (window.physicalSize.width / window.devicePixelRatio) / 2 - 50;
+  //double posx = window.physicalSize.width / window.devicePixelRatio - 100;
   double posy = 25.0;
   Cursor cursor = new Cursor();
   Ball ball = new Ball();
@@ -39,7 +40,7 @@ class _TrackFingerState extends State<TrackFinger>
         // #enddocregion addListener
         setState(() {
           // The state that has changed here is the animation object’s value.
-          print(animation.value);
+          // print(animation.value);
         });
         // #docregion addListener
       });
@@ -49,13 +50,13 @@ class _TrackFingerState extends State<TrackFinger>
 
   @override
   Widget build(BuildContext context) {
-    print('window.physicalSize.width: ${window.physicalSize.width}');
-    print(
-        'window.physicalSize.width/window.devicePixelRatio: ${window.physicalSize.width / window.devicePixelRatio}');
-    print(
-        'window.physicalSize.width/window.devicePixelRatio/2: ${window.physicalSize.width / window.devicePixelRatio / 2}');
-    print('window.physicalSize.height: ${window.physicalSize.height}');
-    print('window.devicePixelRatio: ${window.devicePixelRatio}');
+    //  print('window.physicalSize.width: ${window.physicalSize.width}');
+    //  print(
+    //      'window.physicalSize.width/window.devicePixelRatio: ${window.physicalSize.width / window.devicePixelRatio}');
+    //  print(
+    //      'window.physicalSize.width/window.devicePixelRatio/2: ${window.physicalSize.width / window.devicePixelRatio / 2}');
+    //  print('window.physicalSize.height: ${window.physicalSize.height}');
+    //  print('window.devicePixelRatio: ${window.devicePixelRatio}');
     return _body();
   }
 
@@ -72,42 +73,45 @@ class _TrackFingerState extends State<TrackFinger>
           top: ball.height,
         ),
         createBall(),
+        Text(posx.toString())
       ]),
     );
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    print('x Global:${details.globalPosition.dx}');
-    print('y Global:${details.globalPosition.dy}');
+    // print('x Global:${details.globalPosition.dx}');
+    // print('y Global:${details.globalPosition.dy}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
-    print('x Local:${localOffset.dx}');
-    print('y Local:${localOffset.dy}');
+    // print('x Local:${localOffset.dx}');
+    // print('y Local:${localOffset.dy}');
 
     setState(() {
       double rEdge = calculateSpaceToEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
       //posy = MediaQuery.of(context).size.height - 100;
-      print('posx:$posx');
-      print('posy:$posy');
-      if (firstShoot) {
-        firstShoot = false;
-        gameStart();
-      } else {}
+      // print('posx:$posx');
+      // print('posy:$posy');
+      //if (firstShoot) {
+      //  firstShoot = false;
+      //gameStart();
+      ball.topPosition = 10.0;
+      // } else {}
     });
   }
 
   gameStart() {
-    return SlideTransition(
-        position: animation,
-        child: Container(
-          width: ball.width,
-          height: ball.height,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.green[400],
-          ),
-        ));
+    ball.topPosition = -20;
+    // return SlideTransition(
+    //     position: animation,
+    //     child: Container(
+    //       width: ball.width,
+    //       height: ball.height,
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(15),
+    //         color: Colors.green[400],
+    //       ),
+    //     ));
   }
 
   Container createCursor() {
@@ -120,11 +124,11 @@ class _TrackFingerState extends State<TrackFinger>
 
   /// توپ
   Positioned createBall() {
-    Cursor cursor = new Cursor();
-    Ball ball = new Ball();
+    ball.leftPosition = posx + cursor.width / 2 - ball.width / 2;
+    ball.topPosition = 0;
     return Positioned(
-      top: 0,
-      left: posx + cursor.width / 2 - ball.width / 2,
+      top: ball.topPosition,
+      left: ball.leftPosition,
       child: Container(
         width: ball.width,
         height: ball.height,

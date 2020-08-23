@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:help/board.dart';
 import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
 import 'package:help/table_screen.dart';
@@ -68,92 +69,114 @@ class _MyHomePageState extends State<MyHomePage> {
                   // Provide an optional curve to make the animation feel smoother.
                   curve: Curves.fastOutSlowIn,
                 ),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  // verticalDirection: VerticalDirection.down,
-                  //crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Container(
-                      height: 50,
-                      color: Colors.blue,
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Go To Track Finger'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TrackFinger()),
-                            );
-                          }),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Colors.amber[100],
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Go To Table'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyTable()),
-                            );
-                          }),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Colors.amber[100],
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Go To Matrix'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Matrix()),
-                            );
-                          }),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Colors.green[100],
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Go To Costum Table'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CustomTable()),
-                            );
-                          }),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Colors.green[300],
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Drag Page'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Drag()),
-                            );
-                          }),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Colors.green[300],
-                      margin: EdgeInsets.all(8.0),
-                      child: MaterialButton(
-                          child: Text('Movement Page'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Movment()),
-                            );
-                          }),
+                    Column(children: [
+                      Container(
+                        height: 50,
+                        color: Colors.blue,
+                        margin: EdgeInsets.all(8.0),
+                        child: MaterialButton(
+                            child: Text('Board'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Board()),
+                              );
+                            }),
+                      ),
+                    ]),
+                    Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // verticalDirection: VerticalDirection.down,
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 50,
+                          color: Colors.blue,
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Go To Track Finger'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TrackFinger()),
+                                );
+                              }),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.amber[100],
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Go To Table'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyTable()),
+                                );
+                              }),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.amber[100],
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Go To Matrix'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Matrix()),
+                                );
+                              }),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.green[100],
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Go To Costum Table'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomTable()),
+                                );
+                              }),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.green[300],
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Drag Page'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Drag()),
+                                );
+                              }),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.green[300],
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Movement Page'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Movment()),
+                                );
+                              }),
+                        ),
+                      ],
                     ),
                   ],
                 )
