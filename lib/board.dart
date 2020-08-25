@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:help/trackFinger.dart';
 
+import 'movement.dart';
+
 class Board extends StatefulWidget {
   @override
   _BoardState createState() => _BoardState();
@@ -13,29 +15,14 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(fit: StackFit.expand, children: [
-      Positioned(
-        child: SafeArea(
-          left: true,
-          top: true,
-          right: true,
-          bottom: true,
-          child: null,
-        ),
-      ),
-    ]);
+    return createBoard();
   }
 
-  createBoard() {
+  Widget createBoard() {
     int rowCount = generateRandomNumber(min: 5, max: 10);
     List<Container> containers = new List<Container>();
     for (var i = 0; i < rowCount; i++) {
       Row row = createRowWithrandomColumns();
-      // for (int j = 0; j < row.children.length; j++) {
-      //   var key = new GlobalKey();
-      //   row.children[j].key = key;
-      // }
-
       Container container = new Container(
         child: row,
       );
@@ -103,5 +90,9 @@ class _BoardState extends State<Board> {
   int generateRandomNumber({min = 1, max = 10}) {
     int num = min + random.nextInt(max - min);
     return num;
+  }
+
+  gamePlayTools() {
+    return TrackFinger();
   }
 }

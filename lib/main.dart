@@ -8,7 +8,7 @@ import 'package:help/table_screen.dart';
 import 'package:help/trackFinger.dart';
 
 import 'custom_table.dart';
-import 'movment.dart';
+import 'movement.dart';
 
 void main() {
   runApp(MyApp());
@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Movment()),
+                                      builder: (context) => Movement()),
                                 );
                               }),
                         ),

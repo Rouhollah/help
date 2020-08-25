@@ -3,12 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-class Movment extends StatefulWidget {
+import 'ball.dart';
+
+class Movement extends StatefulWidget {
   @override
-  _MovmentState createState() => _MovmentState();
+  _MovementState createState() => _MovementState();
 }
 
-class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
+class _MovementState extends State<Movement>
+    with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   Animation<Offset> _animationOffset;
   Tween<double> _tween;
@@ -16,6 +19,8 @@ class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   math.Random _random = math.Random();
   int position = 0;
+
+  Ball ball = new Ball();
 
   double getRandomAngle() {
     return math.pi * 2 / 25 * _random.nextInt(25);
@@ -38,7 +43,8 @@ class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
     //       print("animationvalue${_animation.value}");
     //     });
     //   });
-    _tweenOffset = Tween<Offset>(begin: Offset(0, 0), end: getRandomOffset());
+    _tweenOffset =
+        Tween<Offset>(begin: Offset(0.5, -1), end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
         setState(() {});
@@ -56,29 +62,32 @@ class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            Center(
-                //   child: Transform.rotate(
-                // angle: _animation.value,
-                child: SlideTransition(
-              position: _animationOffset,
-              child: Icon(
-                Icons.arrow_upward,
-                size: 250.0,
-              ),
-            )),
-            Expanded(
-              child: Container(),
-            ),
-            RaisedButton(
-              child: Text('SPIN'),
-              onPressed: setNewPosition,
-            )
-          ],
-        ));
+    return Center(
+        child: SlideTransition(
+            position: _animationOffset, child: ball.createBall()));
+    // return Container(
+    //     color: Colors.white,
+    //     child: Column(
+    //       children: <Widget>[
+    //         Center(
+    //             //   child: Transform.rotate(
+    //             // angle: _animation.value,
+    //             child: SlideTransition(
+    //           position: _animationOffset,
+    //           child: Icon(
+    //             Icons.arrow_upward,
+    //             size: 250.0,
+    //           ),
+    //         )),
+    //         Expanded(
+    //           child: Container(),
+    //         ),
+    //         RaisedButton(
+    //           child: Text('SPIN'),
+    //           onPressed: setNewPosition,
+    //         )
+    //       ],
+    //     ));
   }
 
   @override

@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:help/ball.dart';
 import 'package:help/cursor.dart';
 
-import 'game_start.dart';
-
 class TrackFinger extends StatefulWidget {
   @override
   _TrackFingerState createState() => _TrackFingerState();
@@ -95,13 +93,13 @@ class _TrackFingerState extends State<TrackFinger>
       //if (firstShoot) {
       //  firstShoot = false;
       //gameStart();
-      ball.topPosition = 10.0;
+      // ball.topPosition = 10.0;
       // } else {}
     });
   }
 
   gameStart() {
-    ball.topPosition = -20;
+    //ball.topPosition = -20;
     // return SlideTransition(
     //     position: animation,
     //     child: Container(
