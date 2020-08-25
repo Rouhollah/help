@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,122 +9,81 @@ class Movment extends StatefulWidget {
 }
 
 class _MovmentState extends State<Movment> with SingleTickerProviderStateMixin {
+  Animation<double> _animation;
+  Animation<Offset> _animationOffset;
+  Tween<double> _tween;
+  Tween<Offset> _tweenOffset;
   AnimationController _animationController;
-  AnimationController controller;
-  Animation _animation;
-  Animation animation;
-  double _top = 80;
-  double _left = 150;
-  Rect r1 = new Rect.fromLTRB(50, 50, 100, 100);
-  Rect r2 = new Rect.fromLTRB(300, 300, 350, 350);
-  //Rect r2 = new Rect.fromCenter();
+  math.Random _random = math.Random();
+  int position = 0;
 
-  Offset _start = Offset(0, 0);
-  Offset _end = Offset(0.0, -0.4);
+  double getRandomAngle() {
+    return math.pi * 2 / 25 * _random.nextInt(25);
+  }
+
+  Offset getRandomOffset() {
+    print(Offset(_random.nextDouble(), _random.nextDouble()));
+    return Offset(_random.nextDouble(), _random.nextDouble());
+  }
 
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: const Duration(seconds: 5), vsync: this);
-    // #docregion addListener
-    //animation = RectTween(begin: r1, end: r2).animate(controller)
-    animation = Tween<Offset>(begin: _start, end: _end).animate(controller)
+    _animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+    // _tween = Tween(begin: 0.0, end: getRandomAngle());
+    // _animation = _tween.animate(_animationController)
+    //   ..addListener(() {
+    //     setState(() {
+    //       print("animationvalue${_animation.value}");
+    //     });
+    //   });
+    _tweenOffset = Tween<Offset>(begin: Offset(0, 0), end: getRandomOffset());
+    _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
-        // #enddocregion addListener
-        setState(() {
-          // The state that has changed here is the animation object’s value.
-          print(animation.value);
-          // print(animation);
-        });
-        // #docregion addListener
+        setState(() {});
       });
-    // #enddocregion addListener
-    controller.forward();
-    //controller.repeat();
-    // _animationController =
-    //     AnimationController(vsync: this, duration: Duration(seconds: 2));
-    // _animation =
-    //     Tween<Offset>(begin: _start, end: _end).animate(_animationController);
+  }
 
-    // _animationController.forward().whenComplete(() {
-    //   // put here the stuff you wanna do when animation completed!
-    // });
+  void setNewPosition() {
+    // _tween.begin = _tween.end;
+    _tweenOffset.begin = _tweenOffset.end;
+    _animationController.reset();
+    // _tween.end = getRandomAngle();
+    _tweenOffset.end = getRandomOffset();
+    _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return Center(
-    //   child: Container(
-    //     margin: EdgeInsets.symmetric(vertical: 10),
-    //     height: animation.value,
-    //     width: animation.value,
-    //     child: FlutterLogo(),
-    //   ),
-    // );
-    // return Stack(
-    //   // fit: StackFit.expand,
-    //   children: [
-    //     // Positioned.fromRect(
-    //     //   rect: r1,
-    //     //   //top: _top,
-    //     //   //left: _left,
-    //     //   child: Container(
-    //     //     // width: 50,
-    //     //     // height: 50,
-    //     //     color: Colors.green[100],
-    //     //   ),
-    //     // ),
-    //     Positioned(
-    //       top: _top,
-    //       left: _left,
-    //       child: Container(
-    //         width: 50,
-    //         height: 50,
-    //         color: Colors.green[100],
-    //       ),
-    //     ),
-    //     Align(
-    //       alignment: Alignment.bottomCenter,
-    //       child: RaisedButton(
-    //         onPressed: move,
-    //         child: Container(
-    //           alignment: Alignment.center,
-    //           color: Colors.green,
-    //           width: 100,
-    //           height: 50,
-    //           child: Text(
-    //             "move",
-    //             style: TextStyle(color: Colors.white, fontSize: 16.0),
-    //           ),
-    //         ),
-    //       ),
-    //     )
-    //   ],
-    // );
-    return SafeArea(
-        child: SlideTransition(
-      position: animation,
-      child: Center(
-          child: Text(
-        "My Text",
-        style: TextStyle(fontSize: 20),
-      )),
-    ));
-  }
-
-  move() {
-    setState(() {
-      _top = 160;
-      _left = 300;
-      //r1 = r2;
-    });
+    return Container(
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            Center(
+                //   child: Transform.rotate(
+                // angle: _animation.value,
+                child: SlideTransition(
+              position: _animationOffset,
+              child: Icon(
+                Icons.arrow_upward,
+                size: 250.0,
+              ),
+            )),
+            Expanded(
+              child: Container(),
+            ),
+            RaisedButton(
+              child: Text('SPIN'),
+              onPressed: setNewPosition,
+            )
+          ],
+        ));
   }
 
   @override
   void dispose() {
-    // _animationController.dispose();
-    controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 }
