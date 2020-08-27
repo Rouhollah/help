@@ -6,15 +6,18 @@ class Ball extends Thing {
   @override
   double get width => 25.0;
   double get height => 25.0;
-  Color get color => Colors.green[300];
+  Color get color => Colors.green[400];
   double leftPosition;
   double topPosition;
 
   Container createBall() {
     return Container(
-      color: color,
       width: width,
       height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: color,
+      ),
     );
   }
 

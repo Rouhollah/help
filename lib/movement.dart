@@ -27,8 +27,10 @@ class _MovementState extends State<Movement>
   }
 
   Offset getRandomOffset() {
-    print(Offset(_random.nextDouble(), _random.nextDouble()));
-    return Offset(_random.nextDouble(), _random.nextDouble());
+    var dx = _random.nextDouble() + 10;
+    var dy = _random.nextDouble() + 15;
+    print("Offset($dx,$dy");
+    return Offset(dx, dy);
   }
 
   @override
@@ -44,7 +46,7 @@ class _MovementState extends State<Movement>
     //     });
     //   });
     _tweenOffset =
-        Tween<Offset>(begin: Offset(0.5, -1), end: getRandomOffset());
+        Tween<Offset>(begin: Offset(0.0, 0.0), end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
         setState(() {});
@@ -62,9 +64,22 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: SlideTransition(
-            position: _animationOffset, child: ball.createBall()));
+    return Container(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          //  Center(
+          // child:
+          SlideTransition(position: _animationOffset, child: ball.createBall()),
+          //),
+          RaisedButton(
+            child: Text('SPIN'),
+            onPressed: setNewPosition,
+          )
+        ],
+      ),
+    );
     // return Container(
     //     color: Colors.white,
     //     child: Column(

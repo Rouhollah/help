@@ -93,13 +93,13 @@ class _TrackFingerState extends State<TrackFinger>
       //if (firstShoot) {
       //  firstShoot = false;
       //gameStart();
-      // ball.topPosition = 10.0;
+      ball.topPosition = 10.0;
       // } else {}
     });
   }
 
   gameStart() {
-    //ball.topPosition = -20;
+    ball.topPosition = -20;
     // return SlideTransition(
     //     position: animation,
     //     child: Container(
