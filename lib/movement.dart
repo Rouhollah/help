@@ -1,4 +1,5 @@
-import 'dart:math' as math;
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
@@ -17,18 +18,30 @@ class _MovementState extends State<Movement>
   Tween<double> _tween;
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
-  math.Random _random = math.Random();
+  //math.Random _random = math.Random();
+  Random _random = new Random();
   int position = 0;
 
   Ball ball = new Ball();
 
-  double getRandomAngle() {
-    return math.pi * 2 / 25 * _random.nextInt(25);
+  // double getRandomAngle() {
+  //   return math.pi * 2 / 25 * _random.nextInt(25);
+  // }
+
+  double generateRandomNumber({min = 1, max = 20}) {
+    var num = min + _random.nextInt(max - min).toDouble();
+
+    return num;
   }
 
   Offset getRandomOffset() {
-    var dx = _random.nextDouble() + 10;
-    var dy = _random.nextDouble() + 15;
+    var w =
+        (window.physicalSize.width / window.devicePixelRatio) / 2.toDouble();
+    var h =
+        (window.physicalSize.height / window.devicePixelRatio) / 2.toDouble();
+    var dx = generateRandomNumber(min: 0, max: w);
+    var dy = generateRandomNumber(min: 0, max: h);
+    // var dy = 0.0;
     print("Offset($dx,$dy");
     return Offset(dx, dy);
   }
@@ -64,20 +77,31 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          //  Center(
-          // child:
-          SlideTransition(position: _animationOffset, child: ball.createBall()),
-          //),
-          RaisedButton(
-            child: Text('SPIN'),
-            onPressed: setNewPosition,
-          )
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('movement page'),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.yellow, width: 1.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            //  Center(
+            // child:
+            SlideTransition(
+                position: _animationOffset, child: ball.createBall()),
+            //),
+            RaisedButton(
+              child: Text('SPIN'),
+              onPressed: setNewPosition,
+            )
+          ],
+        ),
       ),
     );
     // return Container(

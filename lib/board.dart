@@ -28,16 +28,20 @@ class _BoardState extends State<Board> {
       );
       containers.add(container);
     }
-    return Column(children: [
-      Column(children: [
-        ...containers,
-      ]),
-      Spacer(),
-      SizedBox(
-        height: 70,
-        child: TrackFinger(),
-      ),
-    ]);
+    return Stack(
+      children: [
+        Column(children: [
+          Column(children: [
+            ...containers,
+          ]),
+          Spacer(),
+          SizedBox(
+            height: 70,
+            child: TrackFinger(),
+          ),
+        ])
+      ],
+    );
   }
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی
