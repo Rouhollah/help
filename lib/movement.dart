@@ -35,14 +35,14 @@ class _MovementState extends State<Movement>
   }
 
   Offset getRandomOffset() {
-    var w =
-        (window.physicalSize.width / window.devicePixelRatio) / 2.toDouble();
-    var h =
-        (window.physicalSize.height / window.devicePixelRatio) / 2.toDouble();
-    var dx = generateRandomNumber(min: 0, max: w);
-    var dy = generateRandomNumber(min: 0, max: h);
+    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
+        .round();
+    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
+        .round();
+    var dx = generateRandomNumber(min: -7, max: 6);
+    var dy = generateRandomNumber(min: -5, max: 15);
     // var dy = 0.0;
-    print("Offset($dx,$dy");
+    print("Offset($dx,$dy)");
     return Offset(dx, dy);
   }
 

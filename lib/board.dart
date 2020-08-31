@@ -1,25 +1,51 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:help/ball.dart';
+import 'package:help/cursor.dart';
+import 'package:help/movement.dart';
 import 'package:help/trackFinger.dart';
-
-import 'movement.dart';
 
 class Board extends StatefulWidget {
   @override
   _BoardState createState() => _BoardState();
 }
 
-class _BoardState extends State<Board> {
+class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   Random random = new Random();
+  Cursor _cursor = new Cursor();
+  Ball ball = new Ball();
+
+  Animation<Offset> _animationOffset;
+  AnimationController _animationController;
+  Tween<Offset> _tweenOffset;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+
+    _tweenOffset =
+        Tween<Offset>(begin: Offset(0.0, 0.0), end: getRandomOffset());
+    _animationOffset = _tweenOffset.animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return createBoard();
+    return SafeArea(
+      top: true,
+      bottom: true,
+      child: createBoard(),
+    );
   }
 
   Widget createBoard() {
-    int rowCount = generateRandomNumber(min: 5, max: 10);
+    int rowCount = generateRandomNumber(min: 2, max: 4);
     List<Container> containers = new List<Container>();
     for (var i = 0; i < rowCount; i++) {
       Row row = createRowWithrandomColumns();
@@ -28,20 +54,55 @@ class _BoardState extends State<Board> {
       );
       containers.add(container);
     }
-    return Stack(
-      children: [
-        Column(children: [
-          Column(children: [
-            ...containers,
-          ]),
-          Spacer(),
-          SizedBox(
-            height: 70,
-            child: TrackFinger(),
+    return Column(children: [
+      ...containers,
+      Spacer(),
+      GestureDetector(
+        onTapDown: (TapDownDetails details) => onTapDown(context, details),
+        child: Container(
+          color: Colors.purple,
+          child: SlideTransition(
+            position: _animationOffset,
+            child: _cursor.createCursor(),
           ),
-        ])
-      ],
-    );
+        ),
+      ),
+    ]);
+  }
+
+  Offset getRandomOffset() {
+    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
+        .round();
+    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
+        .round();
+    var dx = generateRandomNumber(min: -7, max: 6);
+    var dy = generateRandomNumber(min: -5, max: 15);
+    // var dy = 0.0;
+    print("Offset($dx,$dy)");
+    return Offset(dx.toDouble(), dy.toDouble());
+  }
+
+  void setNewPosition() {
+    _tweenOffset.begin = _tweenOffset.end;
+    _animationController.reset();
+    _tweenOffset.end = getRandomOffset();
+    _animationController.forward();
+  }
+
+  void onTapDown(BuildContext context, TapDownDetails details) {
+    final RenderBox cursorBox = _cursor.key.currentContext.findRenderObject();
+    final Offset localOffset = cursorBox.globalToLocal(details.globalPosition);
+    setState(() {
+      double rEdge = calculateSpaceToEdges();
+      _cursor.leftPosition = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
+
+      // } else {}
+    });
+  }
+
+  calculateSpaceToEdges() {
+    double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
+    return rightEdge;
   }
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی
@@ -58,7 +119,7 @@ class _BoardState extends State<Board> {
 
   /// ایجاد ستون هایی با تعداد و رنگ تصادفی همراه با فاصله بین آنها ، عمودی و افقی
   List<Widget> randomColumns() {
-    int cols = generateRandomNumber();
+    int cols = generateRandomNumber(min: 3, max: 5);
     List<Widget> columns = new List<Widget>();
     for (var i = 0; i < cols; i++) {
       // var _key = new GlobalKey(debugLabel: i.toString());

@@ -68,21 +68,21 @@ class _TrackFingerState extends State<TrackFinger>
         new Positioned(
           child: createCursor(),
           left: posx,
-          top: ball.height,
+          top: cursor.height * 3,
         ),
-        AnimatedPositioned(
-          duration: const Duration(seconds: 1),
-          top: ball.topPosition,
-          left: ball.leftPosition,
-          child: Container(
-            width: ball.width,
-            height: ball.height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.green[400],
-            ),
-          ),
-        )
+        // AnimatedPositioned(
+        //   duration: const Duration(seconds: 1),
+        //   top: ball.topPosition,
+        //   left: ball.leftPosition,
+        //   child: Container(
+        //     width: ball.width,
+        //     height: ball.height,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(15),
+        //       color: Colors.green[400],
+        //     ),
+        //   ),
+        // )
         // Text(posx.toString())
       ]),
     );
