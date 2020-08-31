@@ -70,8 +70,20 @@ class _TrackFingerState extends State<TrackFinger>
           left: posx,
           top: ball.height,
         ),
-        createBall(),
-        Text(posx.toString())
+        AnimatedPositioned(
+          duration: const Duration(seconds: 1),
+          top: ball.topPosition,
+          left: ball.leftPosition,
+          child: Container(
+            width: ball.width,
+            height: ball.height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.green[400],
+            ),
+          ),
+        )
+        // Text(posx.toString())
       ]),
     );
   }
@@ -93,7 +105,7 @@ class _TrackFingerState extends State<TrackFinger>
       //if (firstShoot) {
       //  firstShoot = false;
       //gameStart();
-      ball.topPosition = 10.0;
+      ball.topPosition = 30.0;
       // } else {}
     });
   }
@@ -123,7 +135,7 @@ class _TrackFingerState extends State<TrackFinger>
   /// توپ
   Positioned createBall() {
     ball.leftPosition = posx + cursor.width / 2 - ball.width / 2;
-    ball.topPosition = 0;
+    // ball.topPosition = 0;
     return Positioned(
       top: ball.topPosition,
       left: ball.leftPosition,

@@ -9,9 +9,10 @@ class Ball extends Thing {
   Color get color => Colors.green[400];
   double leftPosition;
   double topPosition;
-
+  Key key = new Key('ball');
   Container createBall() {
     return Container(
+      key: key,
       width: width,
       height: height,
       decoration: BoxDecoration(
