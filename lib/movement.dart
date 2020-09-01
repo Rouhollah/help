@@ -29,20 +29,19 @@ class _MovementState extends State<Movement>
   // }
 
   double generateRandomNumber({min = 1, max = 20}) {
-    var num = min + _random.nextInt(max - min).toDouble();
-
-    return num;
+    int num = min + _random.nextInt(max - min);
+    return num.toDouble();
   }
 
   Offset getRandomOffset() {
-    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
-        .round();
-    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
-        .round();
-    var dx = generateRandomNumber(min: -7, max: 6);
-    var dy = generateRandomNumber(min: -5, max: 15);
+    var w =
+        (window.physicalSize.width / window.devicePixelRatio) / 2.toDouble();
+    var h =
+        (window.physicalSize.height / window.devicePixelRatio) / 2.toDouble();
+    var dx = generateRandomNumber(min: 0, max: w);
+    var dy = generateRandomNumber(min: 0, max: h);
     // var dy = 0.0;
-    print("Offset($dx,$dy)");
+    print("Offset($dx,$dy");
     return Offset(dx, dy);
   }
 

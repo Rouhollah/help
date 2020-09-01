@@ -13,6 +13,8 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
+  double deviceWidth;
+  double deviceHeigth;
   Random random = new Random();
   Cursor _cursor = new Cursor();
   Ball ball = new Ball();
@@ -33,6 +35,18 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Schedule code execution once after the frame has rendered
+      print(MediaQuery.of(context).size.toString());
+      deviceWidth = MediaQuery.of(context).size.width;
+      deviceHeigth = MediaQuery.of(context).size.height;
+    });
+    //or
+    // new Future.delayed(Duration.zero, () {
+    //       // Schedule a zero-delay future to be executed
+    //       print(MediaQuery.of(context).size.toString());
+    //   });
   }
 
   @override
@@ -60,7 +74,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       GestureDetector(
         onTapDown: (TapDownDetails details) => onTapDown(context, details),
         child: Container(
-          color: Colors.purple,
+          width: deviceWidth,
+          height: 100,
+          color: Colors.white,
           child: SlideTransition(
             position: _animationOffset,
             child: _cursor.createCursor(),
