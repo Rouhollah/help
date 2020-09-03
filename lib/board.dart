@@ -12,16 +12,18 @@ class Board extends StatefulWidget {
   _BoardState createState() => _BoardState();
 }
 
-class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
-  double deviceWidth;
-  double deviceHeigth;
+class _BoardState extends State<Board> with TickerProviderStateMixin {
+  double screenWidth;
+  double screenHeigth;
   Random random = new Random();
-  Cursor _cursor = new Cursor();
   Ball ball = new Ball();
+  Cursor cursor = new Cursor();
 
   Animation<Offset> _animationOffset;
   AnimationController _animationController;
   Tween<Offset> _tweenOffset;
+
+  double posX;
 
   @override
   void initState() {
@@ -35,12 +37,12 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       });
+    print("initState");
 
+//دسترسی به  content
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Schedule code execution once after the frame has rendered
-      print(MediaQuery.of(context).size.toString());
-      deviceWidth = MediaQuery.of(context).size.width;
-      deviceHeigth = MediaQuery.of(context).size.height;
+      // print(MediaQuery.of(context).size.toString());
     });
     //or
     // new Future.delayed(Duration.zero, () {
@@ -51,6 +53,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeigth = MediaQuery.of(context).size.height;
+    print("screenWidthInBuildMethod");
+    posX = screenWidth / 2 - 50;
     return SafeArea(
       top: true,
       bottom: true,
@@ -71,18 +77,20 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     return Column(children: [
       ...containers,
       Spacer(),
-      GestureDetector(
-        onTapDown: (TapDownDetails details) => onTapDown(context, details),
-        child: Container(
-          width: deviceWidth,
-          height: 100,
-          color: Colors.white,
-          child: SlideTransition(
-            position: _animationOffset,
-            child: _cursor.createCursor(),
-          ),
-        ),
-      ),
+      SizedBox(
+          height: 120,
+          child: GestureDetector(
+              onTapDown: (details) {},
+              child: new Stack(children: <Widget>[
+                new Container(
+                  color: Colors.purple,
+                ),
+                new Positioned(
+                  child: cursor.createCursor(), //createCursor(),
+                  left: posX,
+                  top: cursor.height * 3,
+                ),
+              ]))),
     ]);
   }
 
@@ -103,22 +111,6 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     _animationController.reset();
     _tweenOffset.end = getRandomOffset();
     _animationController.forward();
-  }
-
-  void onTapDown(BuildContext context, TapDownDetails details) {
-    final RenderBox cursorBox = _cursor.key.currentContext.findRenderObject();
-    final Offset localOffset = cursorBox.globalToLocal(details.globalPosition);
-    setState(() {
-      double rEdge = calculateSpaceToEdges();
-      _cursor.leftPosition = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
-
-      // } else {}
-    });
-  }
-
-  calculateSpaceToEdges() {
-    double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
-    return rightEdge;
   }
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی
@@ -171,9 +163,5 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   int generateRandomNumber({min = 1, max = 10}) {
     int num = min + random.nextInt(max - min);
     return num;
-  }
-
-  gamePlayTools() {
-    return TrackFinger();
   }
 }

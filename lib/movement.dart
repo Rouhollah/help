@@ -28,28 +28,27 @@ class _MovementState extends State<Movement>
   //   return math.pi * 2 / 25 * _random.nextInt(25);
   // }
 
-  double generateRandomNumber({min = 1, max = 20}) {
+  int generateRandomNumber({min = 1, max = 20}) {
     int num = min + _random.nextInt(max - min);
-    return num.toDouble();
+    return num;
   }
 
   Offset getRandomOffset() {
-    var w =
-        (window.physicalSize.width / window.devicePixelRatio) / 2.toDouble();
-    var h =
-        (window.physicalSize.height / window.devicePixelRatio) / 2.toDouble();
+    int w = ((window.physicalSize.width / window.devicePixelRatio) / 2).round();
+    int h =
+        ((window.physicalSize.height / window.devicePixelRatio) / 2).round();
     var dx = generateRandomNumber(min: 0, max: w);
     var dy = generateRandomNumber(min: 0, max: h);
     // var dy = 0.0;
     print("Offset($dx,$dy");
-    return Offset(dx, dy);
+    return Offset(dx.toDouble(), dy.toDouble());
   }
 
   @override
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(duration: Duration(seconds: 1), vsync: this);
+        AnimationController(duration: Duration(seconds: 5), vsync: this);
     // _tween = Tween(begin: 0.0, end: getRandomAngle());
     // _animation = _tween.animate(_animationController)
     //   ..addListener(() {
@@ -61,7 +60,11 @@ class _MovementState extends State<Movement>
         Tween<Offset>(begin: Offset(0.0, 0.0), end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
-        setState(() {});
+        setState(() {
+          if (_animationOffset.isCompleted) {
+            setNewPosition();
+          } else {}
+        });
       });
   }
 
@@ -76,56 +79,8 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('movement page'),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.yellow, width: 1.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            //  Center(
-            // child:
-            SlideTransition(
-                position: _animationOffset, child: ball.createBall()),
-            //),
-            RaisedButton(
-              child: Text('SPIN'),
-              onPressed: setNewPosition,
-            )
-          ],
-        ),
-      ),
-    );
-    // return Container(
-    //     color: Colors.white,
-    //     child: Column(
-    //       children: <Widget>[
-    //         Center(
-    //             //   child: Transform.rotate(
-    //             // angle: _animation.value,
-    //             child: SlideTransition(
-    //           position: _animationOffset,
-    //           child: Icon(
-    //             Icons.arrow_upward,
-    //             size: 250.0,
-    //           ),
-    //         )),
-    //         Expanded(
-    //           child: Container(),
-    //         ),
-    //         RaisedButton(
-    //           child: Text('SPIN'),
-    //           onPressed: setNewPosition,
-    //         )
-    //       ],
-    //     ));
+    return SlideTransition(
+        position: _animationOffset, child: ball.createBall());
   }
 
   @override

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:help/board.dart';
 import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
+import 'package:help/staggerAnimation.dart';
 import 'package:help/table_screen.dart';
 import 'package:help/trackFinger.dart';
 
 import 'custom_table.dart';
 import 'movement.dart';
+import 'play.dart';
 
 void main() {
   runApp(MyApp());
@@ -83,6 +85,34 @@ class _MyHomePageState extends State<MyHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Board()),
+                              );
+                            }),
+                      ),
+                      Container(
+                        height: 50,
+                        color: Colors.blue,
+                        margin: EdgeInsets.all(8.0),
+                        child: MaterialButton(
+                            child: Text('Straggerd Anim'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ImagesDemo()),
+                              );
+                            }),
+                      ),
+                      Container(
+                        height: 50,
+                        color: Colors.blue,
+                        margin: EdgeInsets.all(8.0),
+                        child: MaterialButton(
+                            child: Text('play'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StaggerDemo()),
                               );
                             }),
                       ),

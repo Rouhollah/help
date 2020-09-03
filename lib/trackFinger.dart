@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help/ball.dart';
 import 'package:help/cursor.dart';
+import 'package:help/movement.dart';
 
 class TrackFinger extends StatefulWidget {
   @override
@@ -66,7 +67,7 @@ class _TrackFingerState extends State<TrackFinger>
           color: Colors.purple,
         ),
         new Positioned(
-          child: createCursor(),
+          child: cursor.createCursor(), //createCursor(),
           left: posx,
           top: cursor.height * 3,
         ),
@@ -89,16 +90,12 @@ class _TrackFingerState extends State<TrackFinger>
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    // print('x Global:${details.globalPosition.dx}');
-    // print('y Global:${details.globalPosition.dy}');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
-    // print('x Local:${localOffset.dx}');
-    // print('y Local:${localOffset.dy}');
-
     setState(() {
       double rEdge = calculateSpaceToEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
+      Movement();
       //posy = MediaQuery.of(context).size.height - 100;
       // print('posx:$posx');
       // print('posy:$posy');
