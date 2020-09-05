@@ -95,7 +95,6 @@ class _TrackFingerState extends State<TrackFinger>
     setState(() {
       double rEdge = calculateSpaceToEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
-      Movement();
       //posy = MediaQuery.of(context).size.height - 100;
       // print('posx:$posx');
       // print('posy:$posy');

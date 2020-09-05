@@ -55,7 +55,6 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeigth = MediaQuery.of(context).size.height;
-    print("screenWidthInBuildMethod");
     posX = screenWidth / 2 - 50;
     return SafeArea(
       top: true,
@@ -77,21 +76,21 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
     return Column(children: [
       ...containers,
       Spacer(),
-      SizedBox(
-          height: 120,
-          child: GestureDetector(
-              onTapDown: (details) {},
-              child: new Stack(children: <Widget>[
-                new Container(
-                  color: Colors.purple,
-                ),
-                new Positioned(
-                  child: cursor.createCursor(), //createCursor(),
-                  left: posX,
-                  top: cursor.height * 3,
-                ),
-              ]))),
+      SlideTransition(
+        position: _animationOffset,
+        child: ball.createBall(),
+      ),
+      SizedBox(height: 120, child: TrackFinger()),
     ]);
+  }
+
+  void onTapDown(BuildContext context, TapDownDetails details) {
+    final RenderBox box = context.findRenderObject();
+    final Offset localOffset = box.globalToLocal(details.globalPosition);
+    setState(() {
+      double rEdge = calculateSpaceToEdges();
+      posX = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
+    });
   }
 
   Offset getRandomOffset() {
@@ -157,6 +156,11 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
       columns.add(sBox);
     }
     return columns;
+  }
+
+  calculateSpaceToEdges() {
+    double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
+    return rightEdge;
   }
 
   /// ایجاد عدد تصادفی در یک رنج

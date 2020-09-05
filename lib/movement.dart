@@ -13,20 +13,12 @@ class Movement extends StatefulWidget {
 
 class _MovementState extends State<Movement>
     with SingleTickerProviderStateMixin {
-  Animation<double> _animation;
   Animation<Offset> _animationOffset;
-  Tween<double> _tween;
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
-  //math.Random _random = math.Random();
   Random _random = new Random();
-  int position = 0;
 
   Ball ball = new Ball();
-
-  // double getRandomAngle() {
-  //   return math.pi * 2 / 25 * _random.nextInt(25);
-  // }
 
   int generateRandomNumber({min = 1, max = 20}) {
     int num = min + _random.nextInt(max - min);
@@ -34,13 +26,14 @@ class _MovementState extends State<Movement>
   }
 
   Offset getRandomOffset() {
-    int w = ((window.physicalSize.width / window.devicePixelRatio) / 2).round();
-    int h =
-        ((window.physicalSize.height / window.devicePixelRatio) / 2).round();
-    var dx = generateRandomNumber(min: 0, max: w);
-    var dy = generateRandomNumber(min: 0, max: h);
+    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
+        .round();
+    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
+        .round();
+    var dx = generateRandomNumber(min: -10, max: 10);
+    var dy = generateRandomNumber(min: 0, max: 38);
     // var dy = 0.0;
-    print("Offset($dx,$dy");
+    print("Offset($dx,$dy)");
     return Offset(dx.toDouble(), dy.toDouble());
   }
 
@@ -48,39 +41,42 @@ class _MovementState extends State<Movement>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(duration: Duration(seconds: 5), vsync: this);
-    // _tween = Tween(begin: 0.0, end: getRandomAngle());
-    // _animation = _tween.animate(_animationController)
-    //   ..addListener(() {
-    //     setState(() {
-    //       print("animationvalue${_animation.value}");
-    //     });
-    //   });
-    _tweenOffset =
-        Tween<Offset>(begin: Offset(0.0, 0.0), end: getRandomOffset());
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
         setState(() {
           if (_animationOffset.isCompleted) {
-            setNewPosition();
-          } else {}
+            if (_tweenOffset.end.dx > 100) {
+              print("object");
+              //  _animationController.stop();
+            } else {
+              setNewPosition();
+            }
+          }
         });
       });
+    _animationController.forward();
   }
 
   void setNewPosition() {
-    // _tween.begin = _tween.end;
     _tweenOffset.begin = _tweenOffset.end;
     _animationController.reset();
-    // _tween.end = getRandomAngle();
     _tweenOffset.end = getRandomOffset();
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-        position: _animationOffset, child: ball.createBall());
+    return Container(
+      padding: EdgeInsets.only(bottom: ball.height),
+      alignment: Alignment.topCenter,
+      //height: MediaQuery.of(context).size.height,
+
+      color: Colors.white,
+      child:
+          SlideTransition(position: _animationOffset, child: ball.createBall()),
+    );
   }
 
   @override
