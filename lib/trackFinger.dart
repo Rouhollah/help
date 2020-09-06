@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help/ball.dart';
 import 'package:help/cursor.dart';
-import 'package:help/movement.dart';
 
 class TrackFinger extends StatefulWidget {
   @override
@@ -62,34 +61,34 @@ class _TrackFingerState extends State<TrackFinger>
   Widget _body() {
     return new GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
-      child: new Stack(children: <Widget>[
-        new Container(
-          color: Colors.purple,
-        ),
-        new Positioned(
-          child: cursor.createCursor(), //createCursor(),
-          left: posx,
-          top: cursor.height * 3,
-        ),
-        // AnimatedPositioned(
-        //   duration: const Duration(seconds: 1),
-        //   top: ball.topPosition,
-        //   left: ball.leftPosition,
-        //   child: Container(
-        //     width: ball.width,
-        //     height: ball.height,
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(15),
-        //       color: Colors.green[400],
-        //     ),
-        //   ),
-        // )
-        // Text(posx.toString())
-      ]),
+      child: new Stack(
+          // fit: StackFit.expand,
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            new Container(
+              color: Colors.yellow[200],
+              // height: MediaQuery.of(context).size.height,
+              // width: MediaQuery.of(context).size.width,
+            ),
+            // new Positioned(
+            //   child: cursor.createCursor(), //createCursor(),
+            //   left: posx,
+            //   bottom: 20,
+            //   // top: cursor.height * 3,
+            // ),
+            AnimatedPositioned(
+                duration: const Duration(milliseconds: 500),
+                // top: 100,
+                left: posx,
+                child: cursor.createCursor()),
+            // )
+            // Text(posx.toString())
+          ]),
     );
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
+    print('tabbed');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
@@ -101,7 +100,7 @@ class _TrackFingerState extends State<TrackFinger>
       //if (firstShoot) {
       //  firstShoot = false;
       //gameStart();
-      ball.topPosition = 30.0;
+      // ball.topPosition = 30.0;
       // } else {}
     });
   }

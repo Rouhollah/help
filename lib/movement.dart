@@ -30,19 +30,20 @@ class _MovementState extends State<Movement>
         .round();
     int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
         .round();
-    var dx = generateRandomNumber(min: -10, max: 10);
-    var dy = generateRandomNumber(min: 0, max: 38);
+    var dx = generateRandomNumber(min: 0, max: 25);
+    var dy = generateRandomNumber(min: 0, max: 37);
     // var dy = 0.0;
     print("Offset($dx,$dy)");
     return Offset(dx.toDouble(), dy.toDouble());
   }
 
+// Offset(0,37)
   @override
   void initState() {
     super.initState();
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: getRandomOffset());
+    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: Offset(0, 37));
     _animationOffset = _tweenOffset.animate(_animationController)
       ..addListener(() {
         setState(() {
@@ -51,7 +52,7 @@ class _MovementState extends State<Movement>
               print("object");
               //  _animationController.stop();
             } else {
-              setNewPosition();
+              //setNewPosition();
             }
           }
         });
@@ -68,15 +69,17 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(bottom: ball.height),
-      alignment: Alignment.topCenter,
-      //height: MediaQuery.of(context).size.height,
+    // return Container(
+    //   padding: EdgeInsets.only(bottom: ball.height),
+    //   alignment: Alignment.bottomCenter,
+    //   //height: MediaQuery.of(context).size.height,
 
-      color: Colors.white,
-      child:
-          SlideTransition(position: _animationOffset, child: ball.createBall()),
-    );
+    //   color: Colors.white,
+    //   child:
+    //       SlideTransition(position: _animationOffset, child: ball.createBall()),
+    // );
+    return SlideTransition(
+        position: _animationOffset, child: ball.createBall());
   }
 
   @override

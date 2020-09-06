@@ -2,8 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:help/ball.dart';
-import 'package:help/cursor.dart';
 import 'package:help/movement.dart';
 import 'package:help/trackFinger.dart';
 
@@ -16,29 +14,10 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   double screenWidth;
   double screenHeigth;
   Random random = new Random();
-  Ball ball = new Ball();
-  Cursor cursor = new Cursor();
-
-  Animation<Offset> _animationOffset;
-  AnimationController _animationController;
-  Tween<Offset> _tweenOffset;
-
-  double posX;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(duration: Duration(seconds: 1), vsync: this);
-
-    _tweenOffset =
-        Tween<Offset>(begin: Offset(0.0, 0.0), end: getRandomOffset());
-    _animationOffset = _tweenOffset.animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      });
-    print("initState");
-
 //دسترسی به  content
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Schedule code execution once after the frame has rendered
@@ -55,16 +34,19 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeigth = MediaQuery.of(context).size.height;
-    posX = screenWidth / 2 - 50;
     return SafeArea(
       top: true,
       bottom: true,
-      child: createBoard(),
+      child: Stack(children: [
+        TrackFinger(),
+        createBoard(),
+        Movement(),
+      ]),
     );
   }
 
   Widget createBoard() {
-    int rowCount = generateRandomNumber(min: 2, max: 4);
+    int rowCount = generateRandomNumber(min: 1, max: 10);
     List<Container> containers = new List<Container>();
     for (var i = 0; i < rowCount; i++) {
       Row row = createRowWithrandomColumns();
@@ -75,41 +57,9 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
     }
     return Column(children: [
       ...containers,
-      Spacer(),
-      SlideTransition(
-        position: _animationOffset,
-        child: ball.createBall(),
-      ),
-      SizedBox(height: 120, child: TrackFinger()),
+      //Spacer(),
+      //SizedBox(height: 120, child: TrackFinger()),
     ]);
-  }
-
-  void onTapDown(BuildContext context, TapDownDetails details) {
-    final RenderBox box = context.findRenderObject();
-    final Offset localOffset = box.globalToLocal(details.globalPosition);
-    setState(() {
-      double rEdge = calculateSpaceToEdges();
-      posX = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
-    });
-  }
-
-  Offset getRandomOffset() {
-    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
-        .round();
-    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
-        .round();
-    var dx = generateRandomNumber(min: -7, max: 6);
-    var dy = generateRandomNumber(min: -5, max: 15);
-    // var dy = 0.0;
-    print("Offset($dx,$dy)");
-    return Offset(dx.toDouble(), dy.toDouble());
-  }
-
-  void setNewPosition() {
-    _tweenOffset.begin = _tweenOffset.end;
-    _animationController.reset();
-    _tweenOffset.end = getRandomOffset();
-    _animationController.forward();
   }
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی
@@ -144,13 +94,13 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
               1,
             ),
           ),
-          // ایجاد فاصله عمودی بین هر ایتم
+          // ایجاد فاصله افقی بین هر ایتم
           SizedBox(
             height: 5,
           )
         ],
       );
-      //ایجاد فاصله بین هر ستون
+      //ایجاد فاصله عمودی بین هر ستون
       SizedBox sBox = SizedBox(width: 5);
       columns.add(col);
       columns.add(sBox);
