@@ -48,42 +48,26 @@ class _TrackFingerState extends State<TrackFinger>
 
   @override
   Widget build(BuildContext context) {
-    //  print('window.physicalSize.width: ${window.physicalSize.width}');
-    //  print(
-    //      'window.physicalSize.width/window.devicePixelRatio: ${window.physicalSize.width / window.devicePixelRatio}');
-    //  print(
-    //      'window.physicalSize.width/window.devicePixelRatio/2: ${window.physicalSize.width / window.devicePixelRatio / 2}');
-    //  print('window.physicalSize.height: ${window.physicalSize.height}');
-    //  print('window.devicePixelRatio: ${window.devicePixelRatio}');
-    return _body();
-  }
-
-  Widget _body() {
     return new GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
-      child: new Stack(
-          // fit: StackFit.expand,
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            new Container(
-              color: Colors.yellow[200],
-              // height: MediaQuery.of(context).size.height,
-              // width: MediaQuery.of(context).size.width,
-            ),
-            // new Positioned(
-            //   child: cursor.createCursor(), //createCursor(),
-            //   left: posx,
-            //   bottom: 20,
-            //   // top: cursor.height * 3,
-            // ),
-            AnimatedPositioned(
-                duration: const Duration(milliseconds: 500),
-                // top: 100,
-                left: posx,
-                child: cursor.createCursor()),
-            // )
-            // Text(posx.toString())
-          ]),
+      child: new Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+        new Container(
+          color: Colors.yellow[200],
+          // height: MediaQuery.of(context).size.height,
+          // width: MediaQuery.of(context).size.width,
+        ),
+        // new Positioned(
+        //   child: cursor.createCursor(), //createCursor(),
+        //   left: posx,
+        //   bottom: 20,
+        //   // top: cursor.height * 3,
+        // ),
+        AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            // top: 100,
+            left: posx,
+            child: cursor.createCursor()),
+      ]),
     );
   }
 
@@ -94,64 +78,12 @@ class _TrackFingerState extends State<TrackFinger>
     setState(() {
       double rEdge = calculateSpaceToEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
-      //posy = MediaQuery.of(context).size.height - 100;
-      // print('posx:$posx');
-      // print('posy:$posy');
-      //if (firstShoot) {
-      //  firstShoot = false;
-      //gameStart();
-      // ball.topPosition = 30.0;
-      // } else {}
     });
-  }
-
-  gameStart() {
-    ball.topPosition = -20;
-    // return SlideTransition(
-    //     position: animation,
-    //     child: Container(
-    //       width: ball.width,
-    //       height: ball.height,
-    //       decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.circular(15),
-    //         color: Colors.green[400],
-    //       ),
-    //     ));
-  }
-
-  Container createCursor() {
-    return Container(
-      color: cursor.color,
-      height: cursor.height,
-      width: cursor.width,
-    );
-  }
-
-  /// توپ
-  Positioned createBall() {
-    ball.leftPosition = posx + cursor.width / 2 - ball.width / 2;
-    // ball.topPosition = 0;
-    return Positioned(
-      top: ball.topPosition,
-      left: ball.leftPosition,
-      child: Container(
-        width: ball.width,
-        height: ball.height,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.green[400],
-        ),
-      ),
-    );
   }
 
   calculateSpaceToEdges() {
     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
     return rightEdge;
-  }
-
-  double initXPosition() {
-    return MediaQuery.of(context).size.width / 2;
   }
 
   @override
