@@ -27,19 +27,22 @@ class _MovementState extends State<Movement>
         AnimationController(duration: Duration(seconds: 1), vsync: this);
     // Offset(20.6, 36)
     _tweenOffset = Tween<Offset>(begin: Offset.zero, end: Offset(10, 10));
-    _animationOffset = _tweenOffset.animate(_animationController)
-      ..addListener(() {
-        setState(() {
-          if (_animationOffset.isCompleted) {
-            if (_tweenOffset.end.dx > 100) {
-              print("object");
-              //  _animationController.stop();
-            } else {
-              //setNewPosition();
-            }
-          }
-        });
-      });
+    _animationOffset = _tweenOffset.animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.linear),
+    );
+    //(_animationController)
+    // ..addListener(() {
+    //   setState(() {
+    //     if (_animationOffset.isCompleted) {
+    //       if (_tweenOffset.end.dx > 100) {
+    //         print("object");
+    //         //  _animationController.stop();
+    //       } else {
+    //         //setNewPosition();
+    //       }
+    //     }
+    //   });
+    // });
     _animationController.forward();
   }
 
