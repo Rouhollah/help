@@ -3,8 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
-
-import 'ball.dart';
+import 'package:help/models/ball.dart';
 
 class Movement extends StatefulWidget {
   @override

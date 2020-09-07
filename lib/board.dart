@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:help/movement.dart';
+import 'package:help/services/inherited_provider.dart';
 import 'package:help/trackFinger.dart';
 
 class Board extends StatefulWidget {
@@ -11,8 +12,8 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> with TickerProviderStateMixin {
-  double screenWidth;
-  double screenHeigth;
+  // double screenWidth;
+  // double screenHeigth;
   Random random = new Random();
 
   @override
@@ -32,8 +33,9 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeigth = MediaQuery.of(context).size.height;
+    // screenWidth = MediaQuery.of(context).size.width;
+    // screenHeigth = MediaQuery.of(context).size.height;
+
     return SafeArea(
       top: true,
       bottom: true,

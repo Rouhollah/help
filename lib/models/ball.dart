@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:help/thing.dart';
+import 'package:help/models/thing.dart';
 
 class Ball extends Thing {
   @override

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:help/board.dart';
 import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
+import 'package:help/models/game_status.dart';
+import 'package:help/services/inherited_provider.dart';
 import 'package:help/slideTransition.dart';
 import 'package:help/staggerAnimation.dart';
 import 'package:help/table_screen.dart';
@@ -48,8 +50,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _color = Colors.green;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
 
+  InheritedProvider provider;
+  GameStatus gameData = new GameStatus(false, Offset(10, 25), 10, 20);
   @override
   Widget build(BuildContext context) {
+    // provider = new InheritedProvider<GameStatus>(
+    //   child: CustomTable(),
+    //   inheritedData: gameData,
+    // );
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -179,6 +187,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       builder: (context) => Matrix()),
                                 );
                               }),
+                        ),
+                        new InheritedProvider<GameStatus>(
+                          child: CustomTable(),
+                          inheritedData: gameData,
                         ),
                         Container(
                           height: 50,

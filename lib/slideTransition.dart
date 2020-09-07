@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:help/ball.dart';
+import 'package:help/models/ball.dart';
 
 class SlideWidget extends StatefulWidget {
   @override

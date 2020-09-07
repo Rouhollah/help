@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:help/models/game_status.dart';
+import 'package:help/services/inherited_provider.dart';
 import 'package:help/trackFinger.dart';
 
 class CustomTable extends StatefulWidget {
@@ -11,8 +13,12 @@ class CustomTable extends StatefulWidget {
 class _CustomTableState extends State<CustomTable> {
   Random random = new Random();
   Offset offset = Offset.zero;
+
   @override
   Widget build(BuildContext context) {
+    // final data = InheritedProvider.of(context).inheritedData;
+    // print("$data");
+    final data = InheritedProvider.of<GameStatus>(context);
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
@@ -30,11 +36,11 @@ class _CustomTableState extends State<CustomTable> {
           ),
         ),
       ),
-      body: _body(),
+      body: _body(data),
     ));
   }
 
-  Widget _body() {
+  Widget _body(data) {
     int rowCount = generateRandomNumber(min: 5, max: 10);
     List<Container> containers = new List<Container>();
     for (var i = 0; i < rowCount; i++) {
@@ -52,6 +58,8 @@ class _CustomTableState extends State<CustomTable> {
     return Column(children: [
       Column(children: [
         ...containers,
+        Text("data"),
+        Text(data.toString()),
       ]),
       Spacer(),
       SizedBox(

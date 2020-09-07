@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:help/cursor.dart';
+import 'package:help/models/cursor.dart';
 
 class TrackFinger extends StatefulWidget {
   @override
