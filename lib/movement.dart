@@ -17,6 +17,8 @@ class _MovementState extends State<Movement>
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
   Random _random = new Random();
+  double screenWidth = window.physicalSize.width / window.devicePixelRatio;
+  double screenHeight = window.physicalSize.height / window.devicePixelRatio;
 
   Ball ball = new Ball();
 
@@ -25,43 +27,29 @@ class _MovementState extends State<Movement>
     super.initState();
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
-    // Offset(20.6, 36)
-    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: Offset(10, 10));
+    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
-    );
-    //(_animationController)
-    // ..addListener(() {
-    //   setState(() {
-    //     if (_animationOffset.isCompleted) {
-    //       if (_tweenOffset.end.dx > 100) {
-    //         print("object");
-    //         //  _animationController.stop();
-    //       } else {
-    //         //setNewPosition();
-    //       }
-    //     }
-    //   });
-    // });
+    )..addListener(() {
+        setState(() {
+          if (_animationOffset.isCompleted) {
+            if (_tweenOffset.end.dx > 100) {
+              print("object");
+              //  _animationController.stop();
+            } else {
+              setNewPosition();
+            }
+          }
+        });
+      });
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   padding: EdgeInsets.only(bottom: ball.height),
-    //   alignment: Alignment.bottomCenter,
-    //   //height: MediaQuery.of(context).size.height,
-
-    //   color: Colors.white,
-    //   child:
-    //       SlideTransition(position: _animationOffset, child: ball.createBall()),
-    // );
     return UnconstrainedBox(
         child: SlideTransition(
             position: _animationOffset, child: ball.createBall()));
-    // return SlideTransition(
-    //     position: _animationOffset, child: ball.createBall());
   }
 
   int generateRandomNumber({min = 1, max = 20}) {
@@ -77,13 +65,11 @@ class _MovementState extends State<Movement>
   }
 
   Offset getRandomOffset() {
-    int w = (((window.physicalSize.width / window.devicePixelRatio) / 2) / 2)
-        .round();
-    int h = (((window.physicalSize.height / window.devicePixelRatio) / 2) / 2)
-        .round();
-    var dx = generateRandomNumber(min: 0, max: 25);
-    var dy = generateRandomNumber(min: 0, max: 37);
-    // var dy = 0.0;
+    int maxWidth = (screenWidth / ball.width).round();
+    int maxHeight = (screenHeight / ball.height).round();
+    print("$maxWidth,$maxHeight");
+    var dx = generateRandomNumber(min: 0, max: maxWidth - 1);
+    var dy = generateRandomNumber(min: 0, max: maxHeight - 1);
     print("Offset($dx,$dy)");
     return Offset(dx.toDouble(), dy.toDouble());
   }

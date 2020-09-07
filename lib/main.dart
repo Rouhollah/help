@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:help/board.dart';
 import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
+import 'package:help/slideTransition.dart';
 import 'package:help/staggerAnimation.dart';
 import 'package:help/table_screen.dart';
 import 'package:help/trackFinger.dart';
@@ -114,6 +115,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StaggerDemo()),
+                              );
+                            }),
+                      ),
+                      Container(
+                        height: 50,
+                        color: Colors.blue,
+                        margin: EdgeInsets.all(8.0),
+                        child: MaterialButton(
+                            child: Text('slide transition'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SlideWidget()),
                               );
                             }),
                       ),
