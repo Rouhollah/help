@@ -14,12 +14,19 @@ class _TrackFingerState extends State<TrackFinger> {
   //window.physicalSize.width = 1280
   //window.devicePixelRatio = 2
   // cursor() / 2 =>  50
-  double posx = (window.physicalSize.width / window.devicePixelRatio) / 2 - 50;
-  double posy = 25.0;
+  //double posy = (window.physicalSize.height) / 2 - 100;
+  double posy;
+  // double posx = (window.physicalSize.width / window.devicePixelRatio) / 2 - 50;
+  double posx;
   Cursor cursor = new Cursor();
 
   @override
   Widget build(BuildContext context) {
+    posy = MediaQuery.of(context).size.height - 100;
+    posx = MediaQuery.of(context).size.width / 2 - 50;
+    cursor.leftPosition = posx;
+    cursor.topPosition = posy;
+    //print("$posy");
     return new GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
       child: new Stack(alignment: Alignment.bottomCenter, children: <Widget>[
@@ -28,7 +35,7 @@ class _TrackFingerState extends State<TrackFinger> {
         ),
         AnimatedPositioned(
             duration: const Duration(milliseconds: 500),
-            // top: 100,
+            top: posy,
             left: posx,
             child: cursor.createCursor()),
       ]),
