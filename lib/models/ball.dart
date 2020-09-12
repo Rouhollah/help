@@ -23,9 +23,14 @@ class Ball extends Thing {
 
   Container heavyBall() {
     return Container(
+      key: key,
       color: Colors.red,
       width: width * 1.5,
       height: height * 1.5,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: color,
+      ),
     );
   }
 }

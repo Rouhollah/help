@@ -6,6 +6,7 @@ import 'package:help/drag_object.dart';
 import 'package:help/matrix.dart';
 import 'package:help/models/game_status.dart';
 import 'package:help/services/inherited_provider.dart';
+import 'package:help/setting/setting.dart';
 import 'package:help/slideTransition.dart';
 import 'package:help/staggerAnimation.dart';
 import 'package:help/table_screen.dart';
@@ -54,10 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
   GameStatus gameData = new GameStatus(false, Offset(10, 25), 10, 20);
   @override
   Widget build(BuildContext context) {
-    // provider = new InheritedProvider<GameStatus>(
-    //   child: CustomTable(),
-    //   inheritedData: gameData,
-    // );
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -83,6 +80,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Row(
                   children: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          color: Colors.blue,
+                          margin: EdgeInsets.all(8.0),
+                          child: MaterialButton(
+                              child: Text('Setting'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SettingsPage()),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
                     Column(children: [
                       Container(
                         height: 50,
@@ -188,44 +203,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               }),
                         ),
-                        new InheritedProvider<GameStatus>(
-                          child: CustomTable(),
-                          inheritedData: gameData,
-                        ),
-                        Container(
-                          height: 50,
-                          color: Colors.green[100],
-                          margin: EdgeInsets.all(8.0),
-                          child: MaterialButton(
-                              child: Text('Go To Costum Table'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CustomTable()),
-                                );
-                              }),
-                        ),
                         Container(
                           height: 50,
                           color: Colors.green[300],
                           margin: EdgeInsets.all(8.0),
                           child: MaterialButton(
-                              child: Text('Drag Page'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Drag()),
-                                );
-                              }),
-                        ),
-                        Container(
-                          height: 50,
-                          color: Colors.green[300],
-                          margin: EdgeInsets.all(8.0),
-                          child: MaterialButton(
-                              child: Text('Movement Page'),
+                              child: Text('Random Move'),
                               onPressed: () {
                                 Navigator.push(
                                   context,

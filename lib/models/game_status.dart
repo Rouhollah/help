@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class GameStatus {
+class GameStatus extends ChangeNotifier {
   bool started;
   Offset ballPostion;
   double topPositionOfCursor;
@@ -8,4 +8,8 @@ class GameStatus {
 
   GameStatus(this.started, this.ballPostion, this.leftPositionOfCursor,
       this.topPositionOfCursor);
+
+  colide() {
+    notifyListeners();
+  }
 }
