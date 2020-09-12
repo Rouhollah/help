@@ -40,9 +40,13 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Offset bp = initialBallPostition();
-    return ChangeNotifierProvider(
-      create: (context) =>
-          GameStatus(false, bp, cursor.leftPosition, cursor.topPosition),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) =>
+              GameStatus(false, bp, cursor.leftPosition, cursor.topPosition),
+        )
+      ],
       child: SafeArea(
         top: true,
         bottom: true,

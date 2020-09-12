@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help/models/cursor.dart';
+import 'package:help/models/game_status.dart';
+import 'package:provider/provider.dart';
 
-class TrackFinger extends StatefulWidget {
+class TrackFinger extends StatefulWidget with ChangeNotifier {
   @override
   _TrackFingerState createState() => _TrackFingerState();
 }
@@ -26,7 +28,6 @@ class _TrackFingerState extends State<TrackFinger> {
     posx = MediaQuery.of(context).size.width / 2 - 50;
     cursor.leftPosition = posx;
     cursor.topPosition = posy;
-    //print("$posy");
     return new GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
       child: new Stack(alignment: Alignment.bottomCenter, children: <Widget>[
@@ -43,6 +44,7 @@ class _TrackFingerState extends State<TrackFinger> {
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
+    Provider.of<GameStatus>(context, listen: false).colide();
     print('tabbed');
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
