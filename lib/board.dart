@@ -7,7 +7,6 @@ import 'package:help/models/ball.dart';
 import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
 import 'package:help/movement.dart';
-import 'package:help/services/inherited_provider.dart';
 import 'package:help/trackFinger.dart';
 import 'package:provider/provider.dart';
 
@@ -40,13 +39,25 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Offset bp = initialBallPostition();
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) =>
-              GameStatus(false, bp, cursor.leftPosition, cursor.topPosition),
-        )
-      ],
+    // return MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(
+    //       create: (context) =>
+    //           GameStatus(false, bp, cursor.leftPosition, cursor.topPosition),
+    //     )
+    //   ],
+    //   child: SafeArea(
+    //     top: true,
+    //     bottom: true,
+    //     child: Stack(children: [
+    //       TrackFinger(),
+    //       Boxes(),
+    //       Movement(),
+    //     ]),
+    //   ),
+    // );
+    return ChangeNotifierProvider<GameStatus>(
+      create: (context) => GameStatus(),
       child: SafeArea(
         top: true,
         bottom: true,

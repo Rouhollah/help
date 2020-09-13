@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:help/models/ball.dart';
+import 'package:help/models/game_status.dart';
+import 'package:provider/provider.dart';
 
 class Movement extends StatefulWidget {
   @override
@@ -36,7 +38,10 @@ class _MovementState extends State<Movement>
               print("object");
               //  _animationController.stop();
             } else {
-              setNewPosition();
+              final game = Provider.of<GameStatus>(context, listen: false);
+              if (game.started) {
+                setNewPosition();
+              }
             }
           }
         });
@@ -46,9 +51,19 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    return UnconstrainedBox(
-        child: SlideTransition(
-            position: _animationOffset, child: ball.createBall()));
+    //final game = Provider.of<GameStatus>(context);
+    //var s = game.getStatus();
+    //print("${s.started}");
+    Consumer<GameStatus>(builder: (context, game, child) {
+      if (game.started) {
+        return UnconstrainedBox(
+            child: (SlideTransition(
+                position: _animationOffset, child: ball.createBall())));
+      } else {
+        return ball.createBall();
+      }
+    });
+    return ball.createBall();
   }
 
   int generateRandomNumber({min = 1, max = 20}) {

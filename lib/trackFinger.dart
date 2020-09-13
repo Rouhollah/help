@@ -6,13 +6,14 @@ import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
 import 'package:provider/provider.dart';
 
-class TrackFinger extends StatefulWidget with ChangeNotifier {
+class TrackFinger extends StatefulWidget {
   @override
   _TrackFingerState createState() => _TrackFingerState();
 }
 
 class _TrackFingerState extends State<TrackFinger> {
   bool firstShoot = true;
+
   //window.physicalSize.width = 1280
   //window.devicePixelRatio = 2
   // cursor() / 2 =>  50
@@ -44,8 +45,7 @@ class _TrackFingerState extends State<TrackFinger> {
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    Provider.of<GameStatus>(context, listen: false).colide();
-    print('tabbed');
+    Provider.of<GameStatus>(context, listen: false).start(true);
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
