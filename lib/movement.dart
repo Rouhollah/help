@@ -31,39 +31,44 @@ class _MovementState extends State<Movement>
     _tweenOffset = Tween<Offset>(begin: Offset.zero, end: getRandomOffset());
     _animationOffset = _tweenOffset.animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
-    )..addListener(() {
-        setState(() {
-          if (_animationOffset.isCompleted) {
-            if (_tweenOffset.end.dx > 100) {
-              print("object");
-              //  _animationController.stop();
-            } else {
-              final game = Provider.of<GameStatus>(context, listen: false);
-              if (game.started) {
-                setNewPosition();
-              }
-            }
-          }
-        });
-      });
+    );
+    // ..addListener(() {
+    //     setState(() {
+    //       if (_animationOffset.isCompleted) {
+
+    //       }
+    //     });
+    //   });
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final game = Provider.of<GameStatus>(context);
-    //var s = game.getStatus();
-    //print("${s.started}");
-    Consumer<GameStatus>(builder: (context, game, child) {
-      if (game.started) {
-        return UnconstrainedBox(
-            child: (SlideTransition(
-                position: _animationOffset, child: ball.createBall())));
-      } else {
-        return ball.createBall();
+    final game = Provider.of<GameStatus>(context).started;
+    setState(() {
+      if (game) {
+        setNewPosition();
       }
     });
-    return ball.createBall();
+    //getRandomOffset();
+    //var s = game.getStatus();
+    // print("${s.started}");
+    // print("$game");
+    return UnconstrainedBox(
+        child: (SlideTransition(
+            position: _animationOffset, child: ball.createBall())));
+//      return ball.createBall();
+
+    // Consumer<GameStatus>(builder: (context, game, child) {
+    //   if (game.started) {
+    //     return UnconstrainedBox(
+    //         child: (SlideTransition(
+    //             position: _animationOffset, child: ball.createBall())));
+    //   } else {
+    //     return ball.createBall();
+    //   }
+    // });
+    // return ball.createBall();
   }
 
   int generateRandomNumber({min = 1, max = 20}) {

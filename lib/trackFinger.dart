@@ -45,7 +45,10 @@ class _TrackFingerState extends State<TrackFinger> {
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    Provider.of<GameStatus>(context, listen: false).start(true);
+    if (firstShoot) {
+      Provider.of<GameStatus>(context, listen: false).start(true);
+      firstShoot = false;
+    }
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
