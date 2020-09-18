@@ -77,24 +77,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Row(
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          color: Colors.blue,
-                          margin: EdgeInsets.all(8.0),
-                          child: MaterialButton(
-                              child: Text('Setting'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SettingsPage()),
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   children: [
+                    //     Container(
+                    //       height: 50,
+                    //       color: Colors.blue,
+                    //       margin: EdgeInsets.all(8.0),
+                    //       child: MaterialButton(
+                    //           child: Text('Setting'),
+                    //           onPressed: () {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) => SettingsPage()),
+                    //             );
+                    //           }),
+                    //     ),
+                    //   ],
+                    // ),
                     Column(children: [
                       Container(
                         height: 50,

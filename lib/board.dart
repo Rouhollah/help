@@ -15,7 +15,7 @@ class Board extends StatefulWidget {
   _BoardState createState() => _BoardState();
 }
 
-class _BoardState extends State<Board> with TickerProviderStateMixin {
+class _BoardState extends State<Board> {
   // double screenWidth;
   // double screenHeigth;
   Random random = new Random();
@@ -39,23 +39,6 @@ class _BoardState extends State<Board> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     Offset bp = initialBallPostition();
-    // return MultiProvider(
-    //   providers: [
-    //     ChangeNotifierProvider(
-    //       create: (context) =>
-    //           GameStatus(false, bp, cursor.leftPosition, cursor.topPosition),
-    //     )
-    //   ],
-    //   child: SafeArea(
-    //     top: true,
-    //     bottom: true,
-    //     child: Stack(children: [
-    //       TrackFinger(),
-    //       Boxes(),
-    //       Movement(),
-    //     ]),
-    //   ),
-    // );
     return ChangeNotifierProvider<GameStatus>(
       create: (context) => GameStatus(),
       child: SafeArea(

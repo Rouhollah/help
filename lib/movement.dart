@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:help/models/ball.dart';
+import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
+import 'package:help/models/values/device.dart';
 import 'package:provider/provider.dart';
 
 class Movement extends StatefulWidget {
@@ -20,15 +22,19 @@ class _MovementState extends State<Movement>
   Random _random = new Random();
   double screenWidth = window.physicalSize.width / window.devicePixelRatio;
   double screenHeight = window.physicalSize.height / window.devicePixelRatio;
-
+  int maxWidthForTransition;
+  int maxHeightForTransition;
   Ball ball = new Ball();
+  String direction;
 
   @override
   void initState() {
     super.initState();
+    Offset init = initialBallPosition();
+
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _tweenOffset = Tween<Offset>(begin: Offset.zero, end: getRandomOffset());
+    _tweenOffset = Tween<Offset>(begin: init, end: init);
     _animationOffset = _tweenOffset.animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
@@ -44,16 +50,12 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    final game = Provider.of<GameStatus>(context).started;
+    final game = Provider.of<GameStatus>(context);
     setState(() {
-      if (game) {
-        setNewPosition();
+      if (game.firstShoot) {
+        setNewPosition('up');
       }
     });
-    //getRandomOffset();
-    //var s = game.getStatus();
-    // print("${s.started}");
-    // print("$game");
     return UnconstrainedBox(
         child: (SlideTransition(
             position: _animationOffset, child: ball.createBall())));
@@ -71,16 +73,50 @@ class _MovementState extends State<Movement>
     // return ball.createBall();
   }
 
+  void setNewPosition(direction) {
+    _tweenOffset.begin = _tweenOffset.end;
+    _animationController.reset();
+    _tweenOffset.end = findDistination(direction);
+
+    _animationController.forward();
+  }
+
+  Offset findDistination(direction) {
+    switch (direction) {
+      case 'up':
+        // حرکت مستقیم به بالا
+        // محاسبه برخورد با باکس ها و تعیین مسیر برگشت
+        return Offset(6.5, 0);
+        break;
+      case 'upRight':
+        break;
+      case 'upLeft':
+        break;
+      case 'down':
+        break;
+      case 'downRight':
+        break;
+      case 'downLeft':
+        break;
+    }
+  }
+
+  Offset initialBallPosition() {
+    var c = new Cursor();
+    maxWidthForTransition = (Screen.screenWidth / ball.width).round();
+    maxHeightForTransition = (Screen.screenHeight / ball.width).round();
+    double dx = (maxWidthForTransition / 2).toDouble();
+    double dy = maxHeightForTransition -
+        (c.position.dy / ( Screen.screenHeight / ball.width)) / 40 -
+        ball.width.toDouble();
+    print(" dx ball:$dx");
+    print(" dy ball:$dy");
+    return Offset(dx, dy);
+  }
+
   int generateRandomNumber({min = 1, max = 20}) {
     int num = min + _random.nextInt(max - min);
     return num;
-  }
-
-  void setNewPosition() {
-    _tweenOffset.begin = _tweenOffset.end;
-    _animationController.reset();
-    _tweenOffset.end = getRandomOffset();
-    _animationController.forward();
   }
 
   Offset getRandomOffset() {

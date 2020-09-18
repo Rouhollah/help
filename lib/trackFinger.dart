@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
+import 'package:help/models/values/device.dart';
 import 'package:provider/provider.dart';
 
 class TrackFinger extends StatefulWidget {
@@ -13,26 +14,31 @@ class TrackFinger extends StatefulWidget {
 
 class _TrackFingerState extends State<TrackFinger> {
   bool firstShoot = true;
-
-  //window.physicalSize.width = 1280
-  //window.devicePixelRatio = 2
-  // cursor() / 2 =>  50
-  //double posy = (window.physicalSize.height) / 2 - 100;
-  double posy;
-  // double posx = (window.physicalSize.width / window.devicePixelRatio) / 2 - 50;
-  double posx;
   Cursor cursor = new Cursor();
+  double posy;
+  double posx;
+  @override
+  void initState() {
+    super.initState();
+
+    //window.physicalSize.height=> height of device
+    //window.physicalSize.height / window.devicePixelRatio => height of screen
+
+    //initial positon of cursor
+    posy = Screen.screenHeight - (5 * cursor.height);
+    posx = Screen.screenWidth / 2 - cursor.width / 2;
+  }
 
   @override
   Widget build(BuildContext context) {
-    posy = MediaQuery.of(context).size.height - 100;
-    posx = MediaQuery.of(context).size.width / 2 - 50;
-    cursor.leftPosition = posx;
-    cursor.topPosition = posy;
-    return new GestureDetector(
+    print("init dx for cursor:$posx");
+    print("init dy for cursor:$posy");
+    //cursor.leftPosition = posx;
+    //cursor.topPosition = posy;
+    return GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
-      child: new Stack(alignment: Alignment.bottomCenter, children: <Widget>[
-        new Container(
+      child: Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+        Container(
           color: Colors.yellow[200],
         ),
         AnimatedPositioned(
@@ -46,7 +52,7 @@ class _TrackFingerState extends State<TrackFinger> {
 
   void onTapDown(BuildContext context, TapDownDetails details) {
     if (firstShoot) {
-      Provider.of<GameStatus>(context, listen: false).start(true);
+      Provider.of<GameStatus>(context, listen: false).gameStart(firstShoot);
       firstShoot = false;
     }
     final RenderBox box = context.findRenderObject();

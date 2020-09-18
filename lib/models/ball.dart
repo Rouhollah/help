@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:help/models/thing.dart';
+import 'package:help/models/values/device.dart';
 
 class Ball extends Thing {
   @override
-  double get width => 25.0;
-  double get height => 25.0;
+  int get width => (Screen.screenWidth / 20).round();
+  int get height => (Screen.screenWidth / 20).round();
   Color get color => Colors.green[400];
   double leftPosition;
   double topPosition;
@@ -12,8 +13,8 @@ class Ball extends Thing {
   Container createBall() {
     return Container(
       key: key,
-      width: width,
-      height: height,
+      width: width.toDouble(),
+      height: height.toDouble(),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: color,

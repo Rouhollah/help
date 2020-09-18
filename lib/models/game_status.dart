@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class GameStatus extends ChangeNotifier {
   bool started = false;
+  bool firstShoot = false;
   Offset ballPostion;
   double topPositionOfCursor;
   double leftPositionOfCursor;
@@ -16,9 +17,11 @@ class GameStatus extends ChangeNotifier {
     //     started, ballPostion, leftPositionOfCursor, topPositionOfCursor);
   }
 
-  void start(start) {
-    this.started = start;
-    print("${this.started}");
+  void gameStart(firstShoot) {
+    this.firstShoot = firstShoot;
+    this.started = firstShoot;
+
+    print("gameStart.started:${this.started}");
     notifyListeners();
   }
 
