@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'models/values/device.dart';
+
 class Boxes extends StatefulWidget {
   @override
   _BoxesState createState() => _BoxesState();
@@ -46,8 +48,9 @@ class _BoxesState extends State<Boxes> {
 
   /// ایجاد ستون هایی با تعداد و رنگ تصادفی همراه با فاصله بین آنها ، عمودی و افقی
   List<Widget> randomColumns() {
-    int cols = generateRandomNumber(min: 3, max: 5);
+    int cols = generateRandomNumber();
     List<Widget> columns = new List<Widget>();
+    double side = Screen.screenWidth / 11;
     for (var i = 0; i < cols; i++) {
       // var _key = new GlobalKey(debugLabel: i.toString());
       GlobalKey _key = new GlobalKey();
@@ -55,8 +58,8 @@ class _BoxesState extends State<Boxes> {
         key: _key,
         children: [
           Container(
-            height: 50.0,
-            width: 50.0,
+            height: side,
+            width: side,
             color: Color.fromRGBO(
               random.nextInt(256),
               random.nextInt(256),

@@ -31,10 +31,6 @@ class _TrackFingerState extends State<TrackFinger> {
 
   @override
   Widget build(BuildContext context) {
-    print("init dx for cursor:$posx");
-    print("init dy for cursor:$posy");
-    //cursor.leftPosition = posx;
-    //cursor.topPosition = posy;
     return GestureDetector(
       onTapDown: (TapDownDetails details) => onTapDown(context, details),
       child: Stack(alignment: Alignment.bottomCenter, children: <Widget>[

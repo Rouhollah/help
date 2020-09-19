@@ -21,6 +21,7 @@ class _MovementState extends State<Movement>
   AnimationController _animationController;
   Random _random = new Random();
 
+  Cursor cursor = new Cursor();
   Ball ball = new Ball();
   String direction;
 
@@ -73,17 +74,17 @@ class _MovementState extends State<Movement>
   void setNewPosition(direction) {
     _tweenOffset.begin = _tweenOffset.end;
     _animationController.reset();
-    _tweenOffset.end = findDistination(direction);
-
+    _tweenOffset.end = findDirection(direction);
+    checkTheRoute();
     _animationController.forward();
   }
 
-  Offset findDistination(direction) {
+  Offset findDirection(direction) {
     switch (direction) {
       case 'up':
         // حرکت مستقیم به بالا
         // محاسبه برخورد با باکس ها و تعیین مسیر برگشت
-        return Offset(6.5, 0);
+        return Offset(ball.leftPosition, 0);
         break;
       case 'upRight':
         break;
@@ -98,15 +99,19 @@ class _MovementState extends State<Movement>
     }
   }
 
+  checkTheRoute() {}
+
   Offset initialBallPosition() {
     var bw = ball.width;
-    Cursor ch = new Cursor();
+
     // چون مختصات برای
     // slideTransiotn
     // بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند
     //این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
-    double dx = (ch.position.dx + ch.width / 2 - bw / 2) / bw;
-    double dy = ((ch.position.dy - 2 * ch.height) / bw);
+    double dx = (cursor.position.dx + cursor.width / 2 - bw / 2) / bw;
+    ball.leftPosition = dx;
+    double dy = ((cursor.position.dy - 2 * cursor.height) / bw);
+    ball.topPosition = dy;
     return Offset(dx, dy);
   }
 
