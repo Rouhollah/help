@@ -20,10 +20,7 @@ class _MovementState extends State<Movement>
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
   Random _random = new Random();
-  double screenWidth = window.physicalSize.width / window.devicePixelRatio;
-  double screenHeight = window.physicalSize.height / window.devicePixelRatio;
-  int maxWidthForTransition;
-  int maxHeightForTransition;
+
   Ball ball = new Ball();
   String direction;
 
@@ -102,13 +99,9 @@ class _MovementState extends State<Movement>
   }
 
   Offset initialBallPosition() {
-    var c = new Cursor();
-    maxWidthForTransition = (Screen.screenWidth / ball.width).round();
-    maxHeightForTransition = (Screen.screenHeight / ball.width).round();
-    double dx = (maxWidthForTransition / 2).toDouble();
-    double dy = maxHeightForTransition -
-        (c.position.dy / ( Screen.screenHeight / ball.width)) / 40 -
-        ball.width.toDouble();
+    var bw = ball.width;
+    double dx = (Screen.maxWidthForBallTransition * bw) / 2 - bw / 2;
+    double dy = (Screen.maxHeightForBallTransition * bw - 5 * bw / 2) - bw;
     print(" dx ball:$dx");
     print(" dy ball:$dy");
     return Offset(dx, dy);
@@ -119,15 +112,15 @@ class _MovementState extends State<Movement>
     return num;
   }
 
-  Offset getRandomOffset() {
-    int maxWidth = (screenWidth / ball.width).round();
-    int maxHeight = (screenHeight / ball.height).round();
-    print("$maxWidth,$maxHeight");
-    var dx = generateRandomNumber(min: 0, max: maxWidth - 1);
-    var dy = generateRandomNumber(min: 0, max: maxHeight - 1);
-    print("Offset($dx,$dy)");
-    return Offset(dx.toDouble(), dy.toDouble());
-  }
+  // Offset getRandomOffset() {
+  //   int maxWidth = (screenWidth / ball.width).round();
+  //   int maxHeight = (screenHeight / ball.height).round();
+  //   print("$maxWidth,$maxHeight");
+  //   var dx = generateRandomNumber(min: 0, max: maxWidth - 1);
+  //   var dy = generateRandomNumber(min: 0, max: maxHeight - 1);
+  //   print("Offset($dx,$dy)");
+  //   return Offset(dx.toDouble(), dy.toDouble());
+  // }
 
   @override
   void dispose() {
