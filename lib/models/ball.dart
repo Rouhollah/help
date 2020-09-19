@@ -4,8 +4,8 @@ import 'package:help/models/values/device.dart';
 
 class Ball extends Thing {
   @override
-  int get width => (Screen.screenWidth / 20).round();
-  int get height => (Screen.screenWidth / 20).round();
+  double get width => Screen.screenHeight / 20;
+  double get height => Screen.screenHeight / 20;
   Color get color => Colors.green[400];
   double leftPosition;
   double topPosition;

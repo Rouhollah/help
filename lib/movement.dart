@@ -100,10 +100,13 @@ class _MovementState extends State<Movement>
 
   Offset initialBallPosition() {
     var bw = ball.width;
-    double dx = (Screen.maxWidthForBallTransition * bw) / 2 - bw / 2;
-    double dy = (Screen.maxHeightForBallTransition * bw - 5 * bw / 2) - bw;
-    print(" dx ball:$dx");
-    print(" dy ball:$dy");
+    Cursor ch = new Cursor();
+    // چون مختصات برای
+    // slideTransiotn
+    // بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند
+    //این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
+    double dx = (ch.position.dx + ch.width / 2 - bw / 2) / bw;
+    double dy = ((ch.position.dy - 2 * ch.height) / bw);
     return Offset(dx, dy);
   }
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Thing {
   Offset position;
-  int width;
-  int height;
+  double width;
+  double height;
   GlobalKey key;
   Color color;
   String type;
