@@ -57,18 +57,6 @@ class _MovementState extends State<Movement>
     return UnconstrainedBox(
         child: (SlideTransition(
             position: _animationOffset, child: ball.createBall())));
-//      return ball.createBall();
-
-    // Consumer<GameStatus>(builder: (context, game, child) {
-    //   if (game.started) {
-    //     return UnconstrainedBox(
-    //         child: (SlideTransition(
-    //             position: _animationOffset, child: ball.createBall())));
-    //   } else {
-    //     return ball.createBall();
-    //   }
-    // });
-    // return ball.createBall();
   }
 
   void setNewPosition(direction) {
@@ -112,6 +100,8 @@ class _MovementState extends State<Movement>
     ball.leftPosition = dx;
     double dy = ((cursor.position.dy - 2 * cursor.height) / bw);
     ball.topPosition = dy;
+    Provider.of<GameStatus>(context, listen: false)
+        .ballPosition(Offset(dx, dy));
     return Offset(dx, dy);
   }
 

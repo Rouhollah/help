@@ -54,12 +54,12 @@ class _TrackFingerState extends State<TrackFinger> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
-      double rEdge = calculateSpaceToEdges();
+      double rEdge = calculateSpaceToRightEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
     });
   }
 
-  calculateSpaceToEdges() {
+  calculateSpaceToRightEdges() {
     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
     return rightEdge;
   }

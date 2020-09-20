@@ -27,12 +27,17 @@ class GameStatus extends ChangeNotifier {
 
   void ballPosition(Offset position) {
     this.ballPostion = position;
-    notifyListeners();
+    //notifyListeners();
   }
 
+  allBoxPosition(List<Container> containers) {
+    whichBoxesAreInBallRoute();
+  }
+
+  whichBoxesAreInBallRoute() {}
   void cursorPosition(dx, dy) {
     this.leftPositionOfCursor = dx;
     this.topPositionOfCursor = dy;
-    notifyListeners();
+    //notifyListeners();
   }
 }
