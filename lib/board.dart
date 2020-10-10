@@ -24,7 +24,7 @@ class _BoardState extends State<Board> {
   @override
   void initState() {
     super.initState();
-//دسترسی به  content
+    // content دسترسی به
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Schedule code execution once after the frame has rendered
       // print(MediaQuery.of(context).size.toString());
@@ -38,7 +38,6 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    Offset bp = initialBallPostition();
     return ChangeNotifierProvider<GameStatus>(
       create: (context) => GameStatus(),
       child: SafeArea(
@@ -60,15 +59,5 @@ class _BoardState extends State<Board> {
     //     Movement(),
     //   ]),
     // );
-  }
-
-  Offset initialBallPostition() {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    Ball ball = new Ball();
-    double dx = screenWidth / ball.width;
-    double dy = screenHeight / ball.height;
-    Offset ballPosition = Offset(dx, dy);
-    return ballPosition;
   }
 }

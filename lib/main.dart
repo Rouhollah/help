@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     //   ],
                     // ),
                     Column(children: [
+                      // Board
                       Container(
                         height: 50,
                         color: Colors.blue,
@@ -110,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             }),
                       ),
+                      // Straggerd Anim
                       Container(
                         height: 50,
                         color: Colors.blue,
@@ -124,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             }),
                       ),
+                      // play
                       Container(
                         height: 50,
                         color: Colors.blue,
@@ -138,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             }),
                       ),
+                      // slide transition
                       Container(
                         height: 50,
                         color: Colors.blue,
@@ -158,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       // verticalDirection: VerticalDirection.down,
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Go To Track Finger
                         Container(
                           height: 50,
                           color: Colors.blue,
@@ -172,6 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               }),
                         ),
+                        // Go To Table
                         Container(
                           height: 50,
                           color: Colors.amber[100],
@@ -186,6 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               }),
                         ),
+                        // Go To Matrix
                         Container(
                           height: 50,
                           color: Colors.amber[100],
@@ -200,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               }),
                         ),
+                        // Random Move
                         Container(
                           height: 50,
                           color: Colors.green[300],

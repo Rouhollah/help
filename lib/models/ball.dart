@@ -7,9 +7,9 @@ class Ball extends Thing {
   double get width => Screen.screenHeight / 20;
   double get height => Screen.screenHeight / 20;
   Color get color => Colors.green[400];
-  double leftPosition;
-  double topPosition;
   GlobalKey key = new GlobalKey();
+
+  /// ساخت توپ
   Container createBall() {
     return Container(
       key: key,
@@ -22,6 +22,7 @@ class Ball extends Thing {
     );
   }
 
+  /// توپ سنگین
   Container heavyBall() {
     return Container(
       key: key,

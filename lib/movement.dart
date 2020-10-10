@@ -20,7 +20,7 @@ class _MovementState extends State<Movement>
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
   Random _random = new Random();
-
+  GameStatus game = new GameStatus();
   Cursor cursor = new Cursor();
   Ball ball = new Ball();
   String direction;
@@ -48,10 +48,35 @@ class _MovementState extends State<Movement>
 
   @override
   Widget build(BuildContext context) {
-    final game = Provider.of<GameStatus>(context);
+    //final game = Provider.of<GameStatus>(context);
+    for (var item in game.getAllBox()) {
+      RenderBox renderbox = item.key.currentContext.findRenderObject();
+      final Offset localOffset = renderbox.localToGlobal(Offset.zero);
+      item.position = localOffset;
+    }
     setState(() {
       if (game.firstShoot) {
-        setNewPosition('up');
+        setDirection('up');
+      } else {
+        // TO DO: آیا مربعی باقی مانده است؟
+        var boxes = game.getAllBox();
+        if (boxes.length == 0) {
+          end();
+        } else {
+          // TO DO: موقعیت توپ را هر لحظه اعلام کن
+          Offset ballPositionNow = ballPositionAnyTime(game);
+          // TO DO: آیا توپ از کرسر عبور کرده است؟
+          if (ballPositionNow.dy > cursor.topPosition) {
+            end();
+          } else {
+            // TO DO: موقعیت توپ را هر لحظه اعلام کن
+
+          }
+        }
+        // TO DO: آیا با مربعی برخورد کرد ؟
+        // TO DO: اگر برخورد کرده مربع را حذف کن و از آرایه هم حذف کن ؟
+        // TO DO: آیا با کناره ها برخورد کرد ؟
+        // TO DO: جهت را مشخص کن و به حرکت ادامه بده
       }
     });
     return UnconstrainedBox(
@@ -71,20 +96,23 @@ class _MovementState extends State<Movement>
     // return ball.createBall();
   }
 
-  void setNewPosition(direction) {
+  /// یافتن موقعیت جدید
+  void setNewPosition(Offset endPosition) {
     _tweenOffset.begin = _tweenOffset.end;
     _animationController.reset();
-    _tweenOffset.end = findDirection(direction);
+    _tweenOffset.end = endPosition;
     checkTheRoute();
     _animationController.forward();
   }
 
-  Offset findDirection(direction) {
+  /// تنظیم مسیر حرکت توپ
+  void setDirection(direction) {
     switch (direction) {
       case 'up':
         // حرکت مستقیم به بالا
         // محاسبه برخورد با باکس ها و تعیین مسیر برگشت
-        return Offset(ball.leftPosition, 0);
+        Offset endPos = Offset(ball.position.dy, 0);
+        setNewPosition(endPos);
         break;
       case 'upRight':
         break;
@@ -99,25 +127,45 @@ class _MovementState extends State<Movement>
     }
   }
 
-  checkTheRoute() {}
+  checkTheRoute() {
+    var boxes = game.getAllBox();
+    var tempBoxes = boxes
+        .where((element) => element.position.dx == ball.position.dx)
+        .toList();
+    setState(() {
+      for (var b in tempBoxes) {
+        print(b.position);
+        print(ball.position);
+        if (game.ballPostion.dy == b.position.dy) {
+          print('crash');
+        }
+      }
+      crash();
+    });
+  }
 
+  crash() {}
+
+  /// مقدار دهی اولیه موقعیت توپ
   Offset initialBallPosition() {
     var bw = ball.width;
-
-    // چون مختصات برای
-    // slideTransiotn
-    // بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند
-    //این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
+// بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند SlideTransition چون مختصات
+// این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
     double dx = (cursor.position.dx + cursor.width / 2 - bw / 2) / bw;
-    ball.leftPosition = dx;
     double dy = ((cursor.position.dy - 2 * cursor.height) / bw);
-    ball.topPosition = dy;
-    return Offset(dx, dy);
+    Offset offset = Offset(dx, dy);
+    Provider.of<GameStatus>(context, listen: false).setBallPosition(offset);
+    return offset;
   }
 
   int generateRandomNumber({min = 1, max = 20}) {
     int num = min + _random.nextInt(max - min);
     return num;
+  }
+
+  /// موقعیت توپ در هر لحظه
+  ballPositionAnyTime(game) {
+    return game.ballPostion;
   }
 
   // Offset getRandomOffset() {
@@ -129,6 +177,7 @@ class _MovementState extends State<Movement>
   //   print("Offset($dx,$dy)");
   //   return Offset(dx.toDouble(), dy.toDouble());
   // }
+  end() {}
 
   @override
   void dispose() {

@@ -4,17 +4,17 @@ import 'package:help/models/ball.dart';
 Ball ball = new Ball();
 
 class Screen {
-  ///screen Width
+  ///عرض صفحه
   static double screenWidth =
       window.physicalSize.width / window.devicePixelRatio;
 
-  /// screen Heith
+  /// ارتفاع صفحه
   static double screenHeight =
       window.physicalSize.height / window.devicePixelRatio;
 
-  ///maximum Width For Ball Transition
+  ///حذاکثر اندازه حرکت توب در عرض صفحه
   static double maxWidthForBallTransition = screenWidth / ball.width;
 
-  ///maximum Height For Ball Transition
+  ///حداکثر انازه حرکت توپ در ارتفاع صفحه
   static double maxHeightForBallTransition = screenWidth / ball.width;
 }

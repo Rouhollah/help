@@ -46,20 +46,24 @@ class _TrackFingerState extends State<TrackFinger> {
     );
   }
 
+  /// محاسبه حرکت کرسر
   void onTapDown(BuildContext context, TapDownDetails details) {
+    // اگر اولین لمس کاربر بود
     if (firstShoot) {
+      // اطلاع بده بازی شروع شد provider به
       Provider.of<GameStatus>(context, listen: false).gameStart(firstShoot);
       firstShoot = false;
     }
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
-      double rEdge = calculateSpaceToEdges();
+      double rEdge = calculateSpaceToRightEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
     });
   }
 
-  calculateSpaceToEdges() {
+  /// محاسبه فاصله ای که کرسر نباید بیشتر از آن به سمت راست برود. چون از صفحه خارح می شود
+  calculateSpaceToRightEdges() {
     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
     return rightEdge;
   }
