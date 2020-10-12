@@ -44,7 +44,7 @@ class _MovementState extends State<Movement>
         Provider.of<GameStatus>(context, listen: false)
             .setBallPosition(ballOffset);
 
-        print("ballPosition:${g.getBallPosition()}");
+        //print("ballPosition:${g.getBallPosition()}");
         var ballPos = g.getBallPosition();
         checkTheRoute(g, ballPos);
 
@@ -136,6 +136,13 @@ class _MovementState extends State<Movement>
         .toList();
     if (tempBoxes.length > 0) {
       print("lenght:${tempBoxes.length}");
+      for (var item in tempBoxes) {
+        print("ball:${g.getBallPosition().dy.toInt()}");
+        print("item:${item.position.dy ~/ ball.width}");
+        if (g.getBallPosition().dy.toInt() == item.position.dy ~/ ball.width) {
+          _animationController.stop();
+        }
+      }
       //_animationController.stop();
     }
   }
