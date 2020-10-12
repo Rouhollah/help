@@ -15,6 +15,23 @@ class _BoxesState extends State<Boxes> {
   Random random = new Random();
 
   @override
+  void initState() {
+    super.initState();
+    new Future.delayed(Duration.zero, () {
+      var g = Provider.of<GameStatus>(context, listen: false);
+      var boxes = g.getAllBox();
+      for (var box in boxes) {
+        RenderBox rb = box.key.currentContext.findRenderObject();
+        final Offset localOffset = rb.localToGlobal(Offset.zero);
+        box.position = localOffset;
+        box.width = rb.size.width;
+        box.height = rb.size.height;
+      }
+      g.boxes = boxes;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return createBoard();
   }
@@ -31,21 +48,21 @@ class _BoxesState extends State<Boxes> {
       );
       containers.add(container);
     }
-    getAllPositionOfBoxes();
-    Provider.of<GameStatus>(context, listen: false).allBoxPosition(containers);
+    // getAllPositionOfBoxes(containers);
+    //Provider.of<GameStatus>(context, listen: false).allBoxPosition(containers);
     return Column(children: [
       ...containers,
     ]);
   }
 
-  getAllPositionOfBoxes(container) {
-    List<Offset> allPosition = new List<Offset>();
-    for (var box in container) {
-      RenderBox box = context.findRenderObject();
-      Offset localOffset = box.globalToLocal(Offset.zero);
-      allPosition.add(localOffset);
-    }
-  }
+  // getAllPositionOfBoxes(containers) {
+  //   List<Offset> allPosition = new List<Offset>();
+  //   for (var box in containers) {
+  //     RenderBox box = context.findRenderObject();
+  //     Offset localOffset = box.globalToLocal(Offset.zero);
+  //     allPosition.add(localOffset);
+  //   }
+  //}
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی
   Row createRowWithrandomColumns() {

@@ -7,7 +7,7 @@ class Ball extends Thing {
   double get width => Screen.screenHeight / 20;
   double get height => Screen.screenHeight / 20;
   Color get color => Colors.green[400];
-  GlobalKey key = new GlobalKey();
+  final key = GlobalKey();
 
   /// ساخت توپ
   Container createBall() {
