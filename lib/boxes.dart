@@ -31,11 +31,20 @@ class _BoxesState extends State<Boxes> {
       );
       containers.add(container);
     }
+    getAllPositionOfBoxes();
+    Provider.of<GameStatus>(context, listen: false).allBoxPosition(containers);
     return Column(children: [
       ...containers,
-      //Spacer(),
-      //SizedBox(height: 120, child: TrackFinger()),
     ]);
+  }
+
+  getAllPositionOfBoxes(container) {
+    List<Offset> allPosition = new List<Offset>();
+    for (var box in container) {
+      RenderBox box = context.findRenderObject();
+      Offset localOffset = box.globalToLocal(Offset.zero);
+      allPosition.add(localOffset);
+    }
   }
 
   /// ایجاد یک ردیف با تعداد ستون تصادفی

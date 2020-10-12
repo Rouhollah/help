@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:help/models/ball.dart';
+import 'package:help/models/box.dart';
 import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
 import 'package:help/models/values/device.dart';
@@ -20,7 +21,7 @@ class _MovementState extends State<Movement>
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
   Random _random = new Random();
-  GameStatus game = new GameStatus();
+  //GameStatus game = new GameStatus();
   Cursor cursor = new Cursor();
   Ball ball = new Ball();
   String direction;
@@ -29,71 +30,67 @@ class _MovementState extends State<Movement>
   void initState() {
     super.initState();
     Offset init = initialBallPosition();
-
     _animationController =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
     _tweenOffset = Tween<Offset>(begin: init, end: init);
     _animationOffset = _tweenOffset.animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
-    );
-    // ..addListener(() {
-    //     setState(() {
-    //       if (_animationOffset.isCompleted) {
+    )..addListener(() {
+        var g = Provider.of<GameStatus>(context, listen: false);
+        RenderBox renderBox = ball.key.currentContext.findRenderObject();
+        Offset offset = renderBox.localToGlobal(Offset.zero);
+        Offset ballOffset =
+            Offset(offset.dx / ball.width, offset.dy / ball.width);
+        Provider.of<GameStatus>(context, listen: false)
+            .setBallPosition(ballOffset);
 
-    //       }
-    //     });
-    //   });
+        print("ballPosition:${g.getBallPosition()}");
+        var ballPos = g.getBallPosition();
+        checkTheRoute(g, ballPos);
+
+        // if (offset == Offset(165.2, 49.9)) {
+        //   _animationController.stop();
+        // }
+        //setState(() {
+
+        //});
+      });
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final game = Provider.of<GameStatus>(context);
-    for (var item in game.getAllBox()) {
-      RenderBox renderbox = item.key.currentContext.findRenderObject();
-      final Offset localOffset = renderbox.localToGlobal(Offset.zero);
-      item.position = localOffset;
-    }
-    setState(() {
-      if (game.firstShoot) {
-        setDirection('up');
-      } else {
-        // TO DO: آیا مربعی باقی مانده است؟
-        var boxes = game.getAllBox();
-        if (boxes.length == 0) {
-          end();
-        } else {
-          // TO DO: موقعیت توپ را هر لحظه اعلام کن
-          Offset ballPositionNow = ballPositionAnyTime(game);
-          // TO DO: آیا توپ از کرسر عبور کرده است؟
-          if (ballPositionNow.dy > cursor.topPosition) {
-            end();
-          } else {
-            // TO DO: موقعیت توپ را هر لحظه اعلام کن
+    final game = Provider.of<GameStatus>(context);
 
-          }
-        }
-        // TO DO: آیا با مربعی برخورد کرد ؟
-        // TO DO: اگر برخورد کرده مربع را حذف کن و از آرایه هم حذف کن ؟
-        // TO DO: آیا با کناره ها برخورد کرد ؟
-        // TO DO: جهت را مشخص کن و به حرکت ادامه بده
+    // setState(() {
+    //print(_animationController.value);
+    if (game.firstShoot) {
+      setDirection('up');
+    } else {
+      // TODO: آیا مربعی باقی مانده است؟
+      var boxes = game.getAllBox();
+      if (boxes.length == 0) {
+        end();
+      } else {
+        // TODO: موقعیت توپ را هر لحظه اعلام کن
+        //Offset ballPositionNow = ballPositionAnyTime(game);
+        // TODO: آیا توپ از کرسر عبور کرده است؟
+        // if (ballPositionNow.dy > cursor.topPosition) {
+        //   end();
+        // } else {
+        //   // TO DO: موقعیت توپ را هر لحظه اعلام کن
+
+        // }
       }
-    });
+      // TODO: آیا با مربعی برخورد کرد ؟
+      // TODO: اگر برخورد کرده مربع را حذف کن و از آرایه هم حذف کن ؟
+      // TODO: آیا با کناره ها برخورد کرد ؟
+      // TODO: جهت را مشخص کن و به حرکت ادامه بده
+    }
+    //});
     return UnconstrainedBox(
         child: (SlideTransition(
             position: _animationOffset, child: ball.createBall())));
-//      return ball.createBall();
-
-    // Consumer<GameStatus>(builder: (context, game, child) {
-    //   if (game.started) {
-    //     return UnconstrainedBox(
-    //         child: (SlideTransition(
-    //             position: _animationOffset, child: ball.createBall())));
-    //   } else {
-    //     return ball.createBall();
-    //   }
-    // });
-    // return ball.createBall();
   }
 
   /// یافتن موقعیت جدید
@@ -101,17 +98,18 @@ class _MovementState extends State<Movement>
     _tweenOffset.begin = _tweenOffset.end;
     _animationController.reset();
     _tweenOffset.end = endPosition;
-    checkTheRoute();
     _animationController.forward();
   }
 
   /// تنظیم مسیر حرکت توپ
   void setDirection(direction) {
+    var g = Provider.of<GameStatus>(context);
     switch (direction) {
       case 'up':
+
         // حرکت مستقیم به بالا
         // محاسبه برخورد با باکس ها و تعیین مسیر برگشت
-        Offset endPos = Offset(ball.position.dy, 0);
+        Offset endPos = Offset(g.getBallPosition().dx, 0);
         setNewPosition(endPos);
         break;
       case 'upRight':
@@ -127,21 +125,19 @@ class _MovementState extends State<Movement>
     }
   }
 
-  checkTheRoute() {
-    var boxes = game.getAllBox();
-    var tempBoxes = boxes
-        .where((element) => element.position.dx == ball.position.dx)
+  checkTheRoute(GameStatus g, ballPostion) {
+    // for (var item in g.boxes) {
+    //   print(item.position.dx ~/ ball.width);
+    // }
+    var tempBoxes = g.boxes
+        .where((element) =>
+            (element.position.dx ~/ ball.width) ==
+            g.getBallPosition().dx.toInt())
         .toList();
-    setState(() {
-      for (var b in tempBoxes) {
-        print(b.position);
-        print(ball.position);
-        if (game.ballPostion.dy == b.position.dy) {
-          print('crash');
-        }
-      }
-      crash();
-    });
+    if (tempBoxes.length > 0) {
+      print("lenght:${tempBoxes.length}");
+      //_animationController.stop();
+    }
   }
 
   crash() {}
@@ -155,7 +151,7 @@ class _MovementState extends State<Movement>
     double dy = ((cursor.position.dy - 2 * cursor.height) / bw);
     Offset offset = Offset(dx, dy);
     Provider.of<GameStatus>(context, listen: false).setBallPosition(offset);
-    return offset;
+    return Offset(dx, dy);
   }
 
   int generateRandomNumber({min = 1, max = 20}) {
@@ -164,9 +160,9 @@ class _MovementState extends State<Movement>
   }
 
   /// موقعیت توپ در هر لحظه
-  ballPositionAnyTime(game) {
-    return game.ballPostion;
-  }
+  // ballPositionAnyTime(game) {
+  //   return game.ballPostion;
+  // }
 
   // Offset getRandomOffset() {
   //   int maxWidth = (screenWidth / ball.width).round();

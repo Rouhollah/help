@@ -9,6 +9,7 @@ class GameStatus extends ChangeNotifier {
   double topPositionOfCursor;
   double leftPositionOfCursor;
   List keisOfBoxes = new List();
+  List<Box> boxes = new List();
 
   // GameStatus(this.started, this.ballPostion, this.leftPositionOfCursor,
   //     this.topPositionOfCursor);
@@ -31,14 +32,21 @@ class GameStatus extends ChangeNotifier {
   /// موقعیت توپ در هر لحظه
   void setBallPosition(Offset position) {
     this.ballPostion = position;
-    notifyListeners();
+  }
+
+  getBallPosition() => this.ballPostion;
+
+  allBoxPosition(List<Container> containers) {
+    whichBoxesAreInBallRoute();
   }
 
   /// موقعیت کرسر در هر لحظه
+  whichBoxesAreInBallRoute() {}
+
   void cursorPosition(dx, dy) {
     this.leftPositionOfCursor = dx;
     this.topPositionOfCursor = dy;
-    notifyListeners();
+    //notifyListeners();
   }
 
   /// نگه داشتن کلیدهای همه مربع ها
@@ -48,12 +56,11 @@ class GameStatus extends ChangeNotifier {
 
   /// لیست همه مربع ها را بر می گرداند
   List<Box> getAllBox() {
-    List<Box> lst = new List();
     for (var i = 0; i < keisOfBoxes.length; i++) {
       Box box = new Box();
       box.key = keisOfBoxes[i];
-      lst.add(box);
+      boxes.add(box);
     }
-    return lst;
+    return boxes;
   }
 }
