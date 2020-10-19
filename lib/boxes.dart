@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:help/models/game_status.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,8 @@ class _BoxesState extends State<Boxes> {
         final Offset localOffset = rb.localToGlobal(Offset.zero);
         box.position = localOffset;
         box.width = rb.size.width;
-        box.height = rb.size.height;
+        box.height = rb.size.width;
+        box.size = rb.size;
       }
       g.boxes = boxes;
     });
@@ -33,7 +35,67 @@ class _BoxesState extends State<Boxes> {
 
   @override
   Widget build(BuildContext context) {
-    return createBoard();
+    //return createBoard();
+    return constantBox();
+  }
+
+  Widget constantBox() {
+    List kies = new List();
+    double side = Screen.screenWidth / 10;
+    for (var i = 0; i < 3; i++) {
+      GlobalKey _key = new GlobalKey();
+      kies.add(_key);
+      Provider.of<GameStatus>(context, listen: false).allKeisOfBoxes(_key);
+    }
+    return Container(
+      //padding: EdgeInsets.only(top: 60),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 100,
+            left: 177,
+            child: Column(
+              key: kies[0],
+              children: [
+                Container(
+                  width: side,
+                  height: side,
+                  color: Colors.red,
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 200,
+            left: 200,
+            child: Column(
+              key: kies[1],
+              children: [
+                Container(
+                  width: side,
+                  height: side,
+                  color: Colors.green,
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 300,
+            left: 100,
+            child: Column(
+              key: kies[2],
+              children: [
+                Container(
+                  width: side,
+                  height: side,
+                  color: Colors.blue,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   /// ایجاد مربع های تصادفی برای شروع بازی
@@ -55,15 +117,6 @@ class _BoxesState extends State<Boxes> {
     ]);
   }
 
-  // getAllPositionOfBoxes(containers) {
-  //   List<Offset> allPosition = new List<Offset>();
-  //   for (var box in containers) {
-  //     RenderBox box = context.findRenderObject();
-  //     Offset localOffset = box.globalToLocal(Offset.zero);
-  //     allPosition.add(localOffset);
-  //   }
-  //}
-
   /// ایجاد یک ردیف با تعداد ستون تصادفی
   Row createRowWithrandomColumns() {
     List<Widget> cols = randomColumns();
@@ -81,7 +134,7 @@ class _BoxesState extends State<Boxes> {
     // تعداد ستون تصادفی است cols
     int cols = generateRandomNumber();
     List<Widget> columns = new List<Widget>();
-    double side = Screen.screenWidth / 11;
+    double side = Screen.screenWidth / 10;
     for (var i = 0; i < cols; i++) {
       // var _key = new GlobalKey(debugLabel: i.toString());
       GlobalKey _key = new GlobalKey();
@@ -106,7 +159,7 @@ class _BoxesState extends State<Boxes> {
         ],
       );
       //ایجاد فاصله عمودی بین هر ستون
-      SizedBox sBox = SizedBox(width: 5);
+      SizedBox sBox = SizedBox(width: 1);
       columns.add(col);
       columns.add(sBox);
     }

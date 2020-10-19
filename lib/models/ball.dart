@@ -4,8 +4,8 @@ import 'package:help/models/values/device.dart';
 
 class Ball extends Thing {
   @override
-  double get width => Screen.screenHeight / 20;
-  double get height => Screen.screenHeight / 20;
+  double get width => Screen.screenWidth / 20;
+  double get height => Screen.screenWidth / 20;
   Color get color => Colors.green[400];
   final key = GlobalKey();
 
@@ -16,7 +16,7 @@ class Ball extends Thing {
       width: width.toDouble(),
       height: height.toDouble(),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
         color: color,
       ),
     );

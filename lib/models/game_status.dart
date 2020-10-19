@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:help/models/ball.dart';
 
 import 'box.dart';
 
 class GameStatus extends ChangeNotifier {
   bool started = false;
   bool firstShoot = false;
-  Offset ballPostion;
+  Offset _ballPostion;
   double topPositionOfCursor;
   double leftPositionOfCursor;
   List keisOfBoxes = new List();
   List<Box> boxes = new List();
+  int ballDirection;
+  Box boxCollideWithBall;
 
   // GameStatus(this.started, this.ballPostion, this.leftPositionOfCursor,
   //     this.topPositionOfCursor);
@@ -24,17 +27,18 @@ class GameStatus extends ChangeNotifier {
   void gameStart(firstShoot) {
     this.firstShoot = firstShoot;
     this.started = firstShoot;
-
     print("gameStart.started:${this.started}");
     notifyListeners();
   }
 
   /// موقعیت توپ در هر لحظه
   void setBallPosition(Offset position) {
-    this.ballPostion = position;
+    _ballPostion =
+        Offset(position.dx / Ball().width, position.dy / Ball().width);
   }
 
-  getBallPosition() => this.ballPostion;
+  /// Height Transition دریافت موقعیت توپ براساس
+  getBallPosition() => _ballPostion;
 
   allBoxPosition(List<Container> containers) {
     whichBoxesAreInBallRoute();

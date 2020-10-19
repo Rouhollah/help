@@ -10,7 +10,7 @@ class Cursor {
   }
 
   double width = Screen.screenWidth / 5;
-  double height = Screen.screenHeight / 40;
+  double height = Screen.screenWidth / 30;
   Color color = Colors.blue[300];
   Offset position;
   double leftPosition;

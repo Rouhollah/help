@@ -1,9 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:help/boxes.dart';
-import 'package:help/models/ball.dart';
 import 'package:help/models/cursor.dart';
 import 'package:help/models/game_status.dart';
 import 'package:help/movement.dart';
@@ -16,13 +15,12 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
-  // double screenWidth;
-  // double screenHeigth;
   Random random = new Random();
   Cursor cursor = new Cursor();
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
     // content دسترسی به
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -40,15 +38,11 @@ class _BoardState extends State<Board> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<GameStatus>(
       create: (context) => GameStatus(),
-      child: SafeArea(
-        top: true,
-        bottom: true,
-        child: Stack(children: [
-          TrackFinger(),
-          Boxes(),
-          Movement(),
-        ]),
-      ),
+      child: Stack(children: [
+        TrackFinger(),
+        Boxes(),
+        Movement(),
+      ]),
     );
     // return SafeArea(
     //   top: true,
@@ -59,5 +53,11 @@ class _BoardState extends State<Board> {
     //     Movement(),
     //   ]),
     // );
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    super.dispose();
   }
 }

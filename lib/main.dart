@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:help/board.dart';
 import 'package:help/matrix.dart';
-import 'package:help/models/game_status.dart';
-import 'package:help/setting/setting.dart';
 import 'package:help/slideTransition.dart';
 import 'package:help/staggerAnimation.dart';
 import 'package:help/table_screen.dart';
