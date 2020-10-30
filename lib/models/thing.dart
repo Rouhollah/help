@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Thing {
+abstract class Thing {
   Offset position;
   double width;
   double height;
@@ -8,20 +8,5 @@ class Thing {
   Color color;
   String type;
 
-  // createThing(type) {
-  //   key = new GlobalKey();
-  //   switch (type) {
-  //     case 'ball':
-  //       return Container(
-  //         key: this.key,
-  //         color: this.color,
-  //         width: this.width,
-  //         height: this.height,
-  //       );
-  //       break;
-  //     case 'cursor':
-  //       break;
-  //     default:
-  //   }
-  // }
+  dynamic create();
 }

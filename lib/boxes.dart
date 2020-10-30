@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:help/models/box.dart';
 import 'package:help/models/game_status.dart';
 import 'package:provider/provider.dart';
 
+import 'models/level.dart';
 import 'models/values/device.dart';
 
 class Boxes extends StatefulWidget {
@@ -14,23 +18,35 @@ class Boxes extends StatefulWidget {
 
 class _BoxesState extends State<Boxes> {
   Random random = new Random();
+  List<Box> listBox = new List();
+  List<Widget> lst = new List();
 
   @override
   void initState() {
     super.initState();
-    new Future.delayed(Duration.zero, () {
+    new Future.delayed(Duration.zero, () async {
       var g = Provider.of<GameStatus>(context, listen: false);
-      var boxes = g.getAllBox();
-      for (var box in boxes) {
-        RenderBox rb = box.key.currentContext.findRenderObject();
-        final Offset localOffset = rb.localToGlobal(Offset.zero);
-        box.position = localOffset;
-        box.width = rb.size.width;
-        box.height = rb.size.width;
-        box.size = rb.size;
+      var jsonLevels = await parseJson();
+      var rest = jsonLevels['levels'] as List;
+      var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
+      var levelBoxes = list.where((p) => p.passed == false).first;
+      for (var box in levelBoxes.boxes) {
+        Box b = new Box(type: box.type, x: box.x, y: box.y);
+        g.setBoxes(b);
       }
-      g.boxes = boxes;
+      listBox = g.getBoxes();
     });
+  }
+
+  /// خواندن فایل جیسون
+  Future<String> _loadFromAsset() async {
+    return await rootBundle.loadString("assets/levels.json");
+  }
+
+  /// json شده از decode برگرداندن فایل
+  Future parseJson() async {
+    String jsonString = await _loadFromAsset();
+    return json.decode(jsonString);
   }
 
   @override
@@ -40,62 +56,16 @@ class _BoxesState extends State<Boxes> {
   }
 
   Widget constantBox() {
-    List kies = new List();
-    double side = Screen.screenWidth / 10;
-    for (var i = 0; i < 3; i++) {
-      GlobalKey _key = new GlobalKey();
-      kies.add(_key);
-      Provider.of<GameStatus>(context, listen: false).allKeisOfBoxes(_key);
+    for (var item in listBox) {
+      var positioned = new Positioned(
+          top: item.position.dx, left: item.position.dy, child: item.create());
+      lst.add(positioned);
     }
     return Container(
-      //padding: EdgeInsets.only(top: 60),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 100,
-            left: 177,
-            child: Column(
-              key: kies[0],
-              children: [
-                Container(
-                  width: side,
-                  height: side,
-                  color: Colors.red,
-                )
-              ],
-            ),
-          ),
-          Positioned(
-            top: 200,
-            left: 200,
-            child: Column(
-              key: kies[1],
-              children: [
-                Container(
-                  width: side,
-                  height: side,
-                  color: Colors.green,
-                )
-              ],
-            ),
-          ),
-          Positioned(
-            top: 300,
-            left: 100,
-            child: Column(
-              key: kies[2],
-              children: [
-                Container(
-                  width: side,
-                  height: side,
-                  color: Colors.blue,
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+        //padding: EdgeInsets.only(top: 60),
+        child: Stack(
+      children: [...lst],
+    ));
   }
 
   /// ایجاد مربع های تصادفی برای شروع بازی

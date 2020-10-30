@@ -30,7 +30,7 @@ class Photo {
 }
 
 final List<Photo> allPhotos = List<Photo>.generate(10, (int index) {
-  return Photo('images/pic${index + 1}.jpg', index);
+  return Photo('assets/images/pic${index + 1}.jpg', index);
 });
 
 class PhotoFrame {

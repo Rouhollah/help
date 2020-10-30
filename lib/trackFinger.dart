@@ -42,6 +42,32 @@ class _TrackFingerState extends State<TrackFinger> {
             top: posy,
             left: posx,
             child: cursor.createCursor()),
+        // AnimatedPositioned(
+        //   duration: const Duration(milliseconds: 500),
+        //   top: Provider.of<GameStatus>(context, listen: false).started == true
+        //       ? Screen.screenHeight - 200
+        //       : Screen.screenHeight + 200,
+        //   left: Screen.screenWidth / 2 + 50,
+        //   child: RaisedButton(
+        //     textColor: Colors.white,
+        //     color: Colors.green,
+        //     onPressed: nextLevel(),
+        //     child: Text('next'),
+        //   ),
+        // ),
+        // AnimatedPositioned(
+        //   duration: const Duration(milliseconds: 500),
+        //   top: Provider.of<GameStatus>(context, listen: false).started == true
+        //       ? Screen.screenHeight - 200
+        //       : Screen.screenHeight + 200,
+        //   left: Screen.screenWidth / 2 - 110,
+        //   child: RaisedButton(
+        //     textColor: Colors.white,
+        //     color: Colors.green,
+        //     onPressed: playAgain(),
+        //     child: Text('play again'),
+        //   ),
+        // )
       ]),
     );
   }
@@ -66,5 +92,13 @@ class _TrackFingerState extends State<TrackFinger> {
   calculateSpaceToRightEdges() {
     double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
     return rightEdge;
+  }
+
+  nextLevel() {
+    print('next level');
+  }
+
+  playAgain() {
+    print('play again');
   }
 }

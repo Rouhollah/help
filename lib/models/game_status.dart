@@ -11,23 +11,27 @@ class GameStatus extends ChangeNotifier {
   double leftPositionOfCursor;
   List keisOfBoxes = new List();
   List<Box> boxes = new List();
+  List<Box> _boxes = new List();
+
   int ballDirection;
   Box boxCollideWithBall;
-
-  // GameStatus(this.started, this.ballPostion, this.leftPositionOfCursor,
-  //     this.topPositionOfCursor);
-
-  GameStatus getStatus() {
-    return GameStatus();
-
-    // return new GameStatus(
-    //     started, ballPostion, leftPositionOfCursor, topPositionOfCursor);
-  }
 
   void gameStart(firstShoot) {
     this.firstShoot = firstShoot;
     this.started = firstShoot;
     print("gameStart.started:${this.started}");
+    notifyListeners();
+  }
+
+  void setBoxes(Box box) {
+    _boxes.add(box);
+  }
+
+  List<Box> getBoxes() => _boxes;
+
+  removeBox() {
+    _boxes.removeWhere((element) => element.key == boxCollideWithBall.key);
+    boxCollideWithBall = null;
     notifyListeners();
   }
 

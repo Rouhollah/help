@@ -10,6 +10,8 @@ import 'package:help/models/game_status.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
+import 'models/values/device.dart';
+
 class Movement extends StatefulWidget {
   @override
   _MovementState createState() => _MovementState();
@@ -37,10 +39,13 @@ class _MovementState extends State<Movement>
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     )..addListener(() {
         if (_animationController.status == AnimationStatus.completed) {
+          print(c++);
           collision();
         }
       });
-    _animationController.forward();
+
+    // در نقطه شروع بایستد
+    _animationController.isDismissed;
   }
 
   @override
@@ -49,7 +54,7 @@ class _MovementState extends State<Movement>
 
     if (game.firstShoot) {
       Provider.of<GameStatus>(context, listen: false).ballDirection = 90;
-      var o = findDestination(game.ballDirection);
+      Offset o = findDestination(game.ballDirection);
       setNewPosition(o);
     } else {
       if (game.boxes.length == 0) {
@@ -63,7 +68,7 @@ class _MovementState extends State<Movement>
   }
 
   /// پیدا کردن نقطه انتهایی حرکت توپ
-  findDestination(degree) {
+  Offset findDestination(int degree) {
     var g = Provider.of<GameStatus>(context, listen: false);
     Offset ballPosition = g.getBallPosition();
     Offset o = Offset(ballPosition.dx, 0);
@@ -82,15 +87,17 @@ class _MovementState extends State<Movement>
 
         return o;
         break;
-      case 30:
-        o = Offset(
-            0,
-            (math.sin(degreeToRadians(30)) + ballPosition.dy * ball.width) /
-                ball.width);
-
+      case 210:
+        //o = Offset(0, math.sin(degreeToRadians(90)) + ballPosition.dy);
+        o = Offset(0, 4 + ballPosition.dy);
+        return o;
+        break;
+      case -30:
+        o = Offset(Screen.screenWidth / ball.width, 4 + ballPosition.dy);
         return o;
         break;
       default:
+        return o;
     }
   }
 
@@ -105,6 +112,7 @@ class _MovementState extends State<Movement>
   }
 
   collision() {
+    // print(c++);
     var g = Provider.of<GameStatus>(context, listen: false);
     Offset ballPosition = g.getBallPosition();
     Offset ballMiddlePosition = getmiddleOfBall();
@@ -119,11 +127,14 @@ class _MovementState extends State<Movement>
         else if (ballMiddlePosition.dx >= box.position.dx / ball.width &&
             ballMiddlePosition.dx <
                 (box.position.dx + (box.width / 5)) / ball.width) {
-          ballDirection = 30;
-          g.ballDirection = 30;
+          ballDirection = 210;
+          g.ballDirection = 210;
+          g.removeBox();
           var o = findDestination(g.ballDirection);
           setNewPosition(o);
-        } else if (ballMiddlePosition.dx >=
+        }
+        // اگر توپ به یک پنجم سمت راست مربع برخورد کرد
+        else if (ballMiddlePosition.dx >=
                 (box.position.dx -
                     (box.width - box.width * 4 / 5) / ball.width) &&
             ballMiddlePosition.dx <
@@ -139,12 +150,33 @@ class _MovementState extends State<Movement>
     }
   }
 
-  // /// تنظیم مسیر حرکت توپ
-  // void setDirection(degree) {
-  //   var g = Provider.of<GameStatus>(context, listen: false);
-  //   var o = findDestination(degree);
-  //   setNewPosition(o);
-  // }
+  /// مربع و انتهای ضلع مربع است x وسط توپ بین x پیدا کردن مربع هایی که
+  List<Box> sameXForBallAndBoxes() {
+    var g = Provider.of<GameStatus>(context, listen: false);
+    var middleOfBall = getmiddleOfBall();
+    var tempBoxes = g
+        .getBoxes()
+        .where((element) =>
+            element.position.dx / ball.width <= middleOfBall.dx &&
+            (element.position.dx + element.width) / ball.width >=
+                middleOfBall.dx)
+        .toList()
+          ..sort((a, b) => a.position.dy.compareTo(b.position.dy));
+    return tempBoxes;
+  }
+
+  /// مقدار دهی اولیه موقعیت توپ
+  Offset initialBallPosition() {
+    var bw = ball.width;
+// بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند SlideTransition چون مختصات
+// این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
+    double dx = (cursor.position.dx + cursor.width / 2 - bw / 2) / bw;
+    double dy = ((cursor.position.dy - ball.height) / bw);
+    // دوباره بر عرض توپ تقسیم می شوند provider در عرض توپ ضرب میشوند اما در dy و dx اینجا
+    Offset offset = Offset(dx * bw, dy * bw);
+    Provider.of<GameStatus>(context, listen: false).setBallPosition(offset);
+    return Offset(dx, dy);
+  }
 
   checkTheRoute() {
     var g = Provider.of<GameStatus>(context, listen: false);
@@ -181,33 +213,6 @@ class _MovementState extends State<Movement>
     // print("offset:$offset");
     //var pos = Provider.of<GameStatus>(context, listen: false).getBallPosition();
     //print("listenToBallPosition:${pos}");
-  }
-
-  /// مربع و انتهای ضلع مربع است x وسط توپ بین x پیدا کردن مربع هایی که
-  List<Box> sameXForBallAndBoxes() {
-    var g = Provider.of<GameStatus>(context, listen: false);
-    var middleOfBall = getmiddleOfBall();
-    var tempBoxes = g.boxes
-        .where((element) =>
-            element.position.dx / ball.width <= middleOfBall.dx &&
-            (element.position.dx + element.width) / ball.width >=
-                middleOfBall.dx)
-        .toList()
-          ..sort((a, b) => a.position.dy.compareTo(b.position.dy));
-    return tempBoxes;
-  }
-
-  /// مقدار دهی اولیه موقعیت توپ
-  Offset initialBallPosition() {
-    var bw = ball.width;
-// بر اساس اندازه صفحه تقسیم بر اندازه آبجکتی است که قرار است حرکت کند SlideTransition چون مختصات
-// این محاسبات جای دقیق توپ روی کرسر را درابتدا پیدا می کند
-    double dx = (cursor.position.dx + cursor.width / 2 - bw / 2) / bw;
-    double dy = ((cursor.position.dy - ball.height) / bw);
-    // دوباره بر عرض توپ تقسیم می شوند provider در عرض توپ ضرب میشوند اما در dy و dx اینجا
-    Offset offset = Offset(dx * bw, dy * bw);
-    Provider.of<GameStatus>(context, listen: false).setBallPosition(offset);
-    return Offset(dx, dy);
   }
 
   int generateRandomNumber({min = 1, max = 20}) {
