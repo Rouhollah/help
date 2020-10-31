@@ -1,6 +1,9 @@
 {
     "levels":[
-        {"level":1,"passed":false,"boxes":[{"x":10,"y":20,"type":"natural"},{"x":60,"y":20,"type":"natural"},{"x":110,"y":20,"type":"natural"}]},
+        {"level":1,"passed":false,"boxes":[{"x":10,"y":20,"type":"natural"},{"x":177,"y":20,"type":"stone"},{"x":110,"y":20,"type":"natural"},{"x": 197,
+                    "y": 20,
+                    "type": "fire"
+                }]},
         {"level":2,"passed":false,"boxes":[{"x":25,"y":25,"type":"natural"},{"x":65,"y":65,"type":"natural"},{"x":100,"y":100,"type":"natural"}]}
 
     ]

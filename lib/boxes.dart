@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:help/models/box.dart';
 import 'package:help/models/game_status.dart';
+import 'package:help/models/type_box.dart';
 import 'package:provider/provider.dart';
 
 import 'models/level.dart';
@@ -18,24 +20,12 @@ class Boxes extends StatefulWidget {
 
 class _BoxesState extends State<Boxes> {
   Random random = new Random();
-  List<Box> listBox = new List();
+  List<Box> listBox;
   List<Widget> lst = new List();
 
   @override
   void initState() {
     super.initState();
-    new Future.delayed(Duration.zero, () async {
-      var g = Provider.of<GameStatus>(context, listen: false);
-      var jsonLevels = await parseJson();
-      var rest = jsonLevels['levels'] as List;
-      var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
-      var levelBoxes = list.where((p) => p.passed == false).first;
-      for (var box in levelBoxes.boxes) {
-        Box b = new Box(type: box.type, x: box.x, y: box.y);
-        g.setBoxes(b);
-      }
-      listBox = g.getBoxes();
-    });
   }
 
   /// خواندن فایل جیسون
@@ -46,19 +36,50 @@ class _BoxesState extends State<Boxes> {
   /// json شده از decode برگرداندن فایل
   Future parseJson() async {
     String jsonString = await _loadFromAsset();
-    return json.decode(jsonString);
+    var result = json.decode(jsonString);
+    return result;
+  }
+
+  Future loadLevel() async {
+    var jsonLevels;
+    var g = Provider.of<GameStatus>(context, listen: false);
+    await parseJson().then((value) {
+      jsonLevels = value;
+    });
+    var rest = jsonLevels['levels'] as List;
+    var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
+    var levelBoxes = list.where((p) => p.passed == false).first;
+    for (var box in levelBoxes.boxes) {
+      Box b = new Box(type: box.type, x: box.x, y: box.y);
+      g.setBoxes(b);
+    }
+    listBox = g.getBoxes();
+    return listBox;
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: loadLevel(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            // Future hasn't finished yet, return a placeholder
+            return Align(alignment: Alignment.center, child: Text('Loading'));
+          } else if (snapshot.hasError) {
+            return Center(child: Text("${snapshot.error}"));
+          } else {
+            return constantBox(); //Text('Loading Complete: ${snapshot.data}');
+          }
+        });
+
     //return createBoard();
-    return constantBox();
+    //return constantBox();
   }
 
   Widget constantBox() {
     for (var item in listBox) {
       var positioned = new Positioned(
-          top: item.position.dx, left: item.position.dy, child: item.create());
+          top: item.position.dy, left: item.position.dx, child: item.create());
       lst.add(positioned);
     }
     return Container(
