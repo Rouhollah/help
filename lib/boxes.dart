@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:help/models/box.dart';
 import 'package:help/models/game_status.dart';
 import 'package:help/models/type_box.dart';
+import 'package:help/services/singleton_service.dart';
 import 'package:provider/provider.dart';
 
 import 'models/level.dart';
@@ -20,12 +21,14 @@ class Boxes extends StatefulWidget {
 
 class _BoxesState extends State<Boxes> {
   Random random = new Random();
-  List<Box> listBox;
+  Future<List<Box>> listBox;
   List<Widget> lst = new List();
+  Future levelList;
 
   @override
   void initState() {
     super.initState();
+    levelList = loadLevel();
   }
 
   /// خواندن فایل جیسون
@@ -43,24 +46,27 @@ class _BoxesState extends State<Boxes> {
   Future loadLevel() async {
     var jsonLevels;
     var g = Provider.of<GameStatus>(context, listen: false);
+    //var jsonLevels = SingletonService.instance.loadLevel();
     await parseJson().then((value) {
       jsonLevels = value;
+
+      var rest = jsonLevels['levels'] as List;
+      var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
+      var levelBoxes = list.where((p) => p.passed == false).first;
+      for (var box in levelBoxes.boxes) {
+        Box b = new Box(type: box.type, x: box.x, y: box.y);
+        g.setBoxes(b);
+      }
+      listBox = g.getBoxes();
     });
-    var rest = jsonLevels['levels'] as List;
-    var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
-    var levelBoxes = list.where((p) => p.passed == false).first;
-    for (var box in levelBoxes.boxes) {
-      Box b = new Box(type: box.type, x: box.x, y: box.y);
-      g.setBoxes(b);
-    }
-    listBox = g.getBoxes();
     return listBox;
   }
 
   @override
   Widget build(BuildContext context) {
+    //var sin = SingletonService.instance.loadLevel();
     return FutureBuilder(
-        future: loadLevel(),
+        future: levelList,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             // Future hasn't finished yet, return a placeholder
@@ -71,7 +77,6 @@ class _BoxesState extends State<Boxes> {
             return constantBox(); //Text('Loading Complete: ${snapshot.data}');
           }
         });
-
     //return createBoard();
     //return constantBox();
   }

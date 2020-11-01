@@ -3,7 +3,7 @@ import 'package:help/models/type_box.dart';
 class Level {
   int level;
   bool passed;
-  List<dynamic> boxes;
+  List<TypeBox> boxes;
   Level({this.level, this.passed, this.boxes});
 
   factory Level.fromJson(Map<String, dynamic> json) {
