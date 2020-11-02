@@ -31,6 +31,8 @@ dependencies:
   provider : 4.3.2+2
   day_night_switch:
   shared_preferences: 0.5.10
+  logging: ^0.11.4
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

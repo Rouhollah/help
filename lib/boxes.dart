@@ -21,7 +21,7 @@ class Boxes extends StatefulWidget {
 
 class _BoxesState extends State<Boxes> {
   Random random = new Random();
-  Future<List<Box>> listBox;
+  List<Box> listBox;
   List<Widget> lst = new List();
   Future levelList;
 
@@ -59,6 +59,7 @@ class _BoxesState extends State<Boxes> {
       }
       listBox = g.getBoxes();
     });
+
     return listBox;
   }
 
