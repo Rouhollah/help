@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help/models/ball.dart';
+import 'package:help/models/level.dart';
 
 import 'box.dart';
 
@@ -12,6 +13,8 @@ class GameStatus extends ChangeNotifier {
   List keisOfBoxes = new List();
   List<Box> boxes = new List();
   List<Box> _boxes = new List();
+  List<Level> levelsList;
+  dynamic jsonLevels;
 
   int ballDirection;
   Box boxCollideWithBall;

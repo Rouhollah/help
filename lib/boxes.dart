@@ -1,17 +1,10 @@
-import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:help/models/box.dart';
 import 'package:help/models/game_status.dart';
-import 'package:help/models/type_box.dart';
-import 'package:help/services/singleton_service.dart';
 import 'package:provider/provider.dart';
 
-import 'models/level.dart';
 import 'models/values/device.dart';
 
 class Boxes extends StatefulWidget {
@@ -28,58 +21,44 @@ class _BoxesState extends State<Boxes> {
   @override
   void initState() {
     super.initState();
-    levelList = loadLevel();
   }
 
-  /// خواندن فایل جیسون
-  Future<String> _loadFromAsset() async {
-    return await rootBundle.loadString("assets/levels.json");
-  }
+  // /// خواندن فایل جیسون
+  // Future<String> _loadFromAsset() async {
+  //   return await rootBundle.loadString("assets/levels.json");
+  // }
 
-  /// json شده از decode برگرداندن فایل
-  Future parseJson() async {
-    String jsonString = await _loadFromAsset();
-    var result = json.decode(jsonString);
-    return result;
-  }
+  // /// json شده از decode برگرداندن فایل
+  // Future parseJson() async {
+  //   String jsonString = await _loadFromAsset();
+  //   var result = json.decode(jsonString);
+  //   return result;
+  // }
 
-  Future loadLevel() async {
-    var jsonLevels;
-    var g = Provider.of<GameStatus>(context, listen: false);
-    //var jsonLevels = SingletonService.instance.loadLevel();
-    await parseJson().then((value) {
-      jsonLevels = value;
+  // Future loadLevel() async {
+  //   var jsonLevels;
+  //   var g = Provider.of<GameStatus>(context, listen: false);
+  //   //var jsonLevels = SingletonService.instance.loadLevel();
+  //   await parseJson().then((value) {
+  //     jsonLevels = value;
 
-      var rest = jsonLevels['levels'] as List;
-      var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
-      var levelBoxes = list.where((p) => p.passed == false).first;
-      for (var box in levelBoxes.boxes) {
-        Box b = new Box(type: box.type, x: box.x, y: box.y);
-        g.setBoxes(b);
-      }
-      listBox = g.getBoxes();
-    });
+  //     var rest = jsonLevels['levels'] as List;
+  //     var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
+  //     var levelBoxes = list.where((p) => p.passed == false).first;
+  //     for (var box in levelBoxes.boxes) {
+  //       Box b = new Box(type: box.type, x: box.x, y: box.y);
+  //       g.setBoxes(b);
+  //     }
+  //     listBox = g.getBoxes();
+  //   });
 
-    return listBox;
-  }
+  //   return listBox;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    //var sin = SingletonService.instance.loadLevel();
-    return FutureBuilder(
-        future: levelList,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            // Future hasn't finished yet, return a placeholder
-            return Align(alignment: Alignment.center, child: Text('Loading'));
-          } else if (snapshot.hasError) {
-            return Center(child: Text("${snapshot.error}"));
-          } else {
-            return constantBox(); //Text('Loading Complete: ${snapshot.data}');
-          }
-        });
     //return createBoard();
-    //return constantBox();
+    return constantBox();
   }
 
   Widget constantBox() {

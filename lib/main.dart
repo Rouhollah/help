@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -46,8 +46,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _color = Colors.green;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
 
-  //InheritedProvider provider;
-  //GameStatus gameData = new GameStatus(false, Offset(10, 25), 10, 20);
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -100,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.blue,
                         margin: EdgeInsets.all(8.0),
                         child: MaterialButton(
-                            child: Text('Board'),
+                            child: Text('Start Game'),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -109,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               );
                             }),
                       ),
+
                       // Straggerd Anim
                       Container(
                         height: 50,
