@@ -8,12 +8,11 @@ class GameStatus extends ChangeNotifier {
   bool started = false;
   bool firstShoot = false;
   Offset _ballPostion;
-  double topPositionOfCursor;
-  double leftPositionOfCursor;
+  Offset _cursorPosition;
   List keisOfBoxes = new List();
-  List<Box> boxes = new List();
-  List<Box> _boxes = new List();
-  List<Level> levelsList;
+  List<Box> boxes = new List<Box>();
+  List<Box> _boxes = new List<Box>();
+  List<Level> levelsList = new List<Level>();
   dynamic jsonLevels;
 
   int ballDirection;
@@ -38,26 +37,22 @@ class GameStatus extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// موقعیت توپ در هر لحظه
+  /// transition position موقعیت توپ بر اساس
   void setBallPosition(Offset position) {
-    _ballPostion =
-        Offset(position.dx / Ball().width, position.dy / Ball().width);
+    _ballPostion = Offset(position.dx / Ball().width, position.dy / Ball().width);
   }
 
   /// Height Transition دریافت موقعیت توپ براساس
   getBallPosition() => _ballPostion;
 
-  allBoxPosition(List<Container> containers) {
-    whichBoxesAreInBallRoute();
+  /// ست کردن موقعیت کرسر در هر لحظه
+  void setCursorPosition(dx, dy) {
+    this._cursorPosition = Offset(dx, dy);
   }
 
-  /// موقعیت کرسر در هر لحظه
-  whichBoxesAreInBallRoute() {}
-
-  void cursorPosition(dx, dy) {
-    this.leftPositionOfCursor = dx;
-    this.topPositionOfCursor = dy;
-    //notifyListeners();
+  /// دریافت موقعیت کرسر در هر لحظه
+  Offset getCursorPosition() {
+    return _cursorPosition;
   }
 
   /// نگه داشتن کلیدهای همه مربع ها

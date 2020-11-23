@@ -3,57 +3,44 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:help/models/box.dart';
 import 'package:help/models/game_status.dart';
+import 'package:help/models/type_box.dart';
 import 'package:provider/provider.dart';
 
+import 'models/level.dart';
 import 'models/values/device.dart';
 
 class Boxes extends StatefulWidget {
+  final Level level;
+  Boxes(this.level);
+
   @override
   _BoxesState createState() => _BoxesState();
 }
 
 class _BoxesState extends State<Boxes> {
   Random random = new Random();
-  List<Box> listBox;
   List<Widget> lst = new List();
-  Future levelList;
+  List<TypeBox> boxOfLevel = new List<TypeBox>();
 
   @override
   void initState() {
     super.initState();
+    var g = Provider.of<GameStatus>(context, listen: false);
+    Level level = g.levelsList.firstWhere(
+        (element) => element.level == widget.level.level,
+        orElse: () => null);
+
+    // اضافه نشده بود ، اضافه کن provider قبلا به level اگر
+    if (level == null) {
+      g.levelsList.add(widget.level);
+      for (var level in g.levelsList) {
+        for (var item in level.boxes) {
+          Box b = new Box(type: item.type, x: item.x, y: item.y);
+          g.setBoxes(b);
+        }
+      }
+    }
   }
-
-  // /// خواندن فایل جیسون
-  // Future<String> _loadFromAsset() async {
-  //   return await rootBundle.loadString("assets/levels.json");
-  // }
-
-  // /// json شده از decode برگرداندن فایل
-  // Future parseJson() async {
-  //   String jsonString = await _loadFromAsset();
-  //   var result = json.decode(jsonString);
-  //   return result;
-  // }
-
-  // Future loadLevel() async {
-  //   var jsonLevels;
-  //   var g = Provider.of<GameStatus>(context, listen: false);
-  //   //var jsonLevels = SingletonService.instance.loadLevel();
-  //   await parseJson().then((value) {
-  //     jsonLevels = value;
-
-  //     var rest = jsonLevels['levels'] as List;
-  //     var list = rest.map<Level>((json) => Level.fromJson(json)).toList();
-  //     var levelBoxes = list.where((p) => p.passed == false).first;
-  //     for (var box in levelBoxes.boxes) {
-  //       Box b = new Box(type: box.type, x: box.x, y: box.y);
-  //       g.setBoxes(b);
-  //     }
-  //     listBox = g.getBoxes();
-  //   });
-
-  //   return listBox;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +49,38 @@ class _BoxesState extends State<Boxes> {
   }
 
   Widget constantBox() {
-    for (var item in listBox) {
-      var positioned = new Positioned(
-          top: item.position.dy, left: item.position.dx, child: item.create());
-      lst.add(positioned);
-    }
-    return Container(
-        //padding: EdgeInsets.only(top: 60),
-        child: Stack(
-      children: [...lst],
-    ));
+    final game = Provider.of<GameStatus>(context);
+    print("board");
+    // نمایش باکسهای هر مرحله
+    // for (var item in game.getBoxes()) {
+    //   var positioned = new Positioned(
+    //       top: item.position.dy, left: item.position.dx, child: item.create());
+    //   lst.add(positioned);
+    // }
+    return Selector<GameStatus, List<Box>>(
+      selector: (buildContext, geme) => game.getBoxes(),
+      builder: (context, boxes, child) {
+        lst = [];
+        Positioned positioned;
+        for (var item in boxes) {
+          positioned = new Positioned(
+              top: item.position.dy,
+              left: item.position.dx,
+              child: item.create());
+          lst.add(positioned);
+        }
+        return Container(
+            child: Stack(children: [
+          ...lst,
+        ]));
+      },
+    );
+
+    // return Container(
+    //     //padding: EdgeInsets.only(top: 60),
+    //     child: Stack(children: [
+    //   ...lst,
+    // ]));
   }
 
   /// ایجاد مربع های تصادفی برای شروع بازی

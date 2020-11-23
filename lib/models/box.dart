@@ -8,7 +8,7 @@ class Box extends Thing {
   double get width => Screen.screenWidth / 10;
   double get height => Screen.screenWidth / 10;
   //Color color;
-  final key = GlobalKey();
+  final key = new GlobalKey();
 
   Box({String type = 'natural', double x, double y}) {
     position = Offset(x, y);

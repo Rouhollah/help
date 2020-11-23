@@ -37,37 +37,7 @@ class _TrackFingerState extends State<TrackFinger> {
         Container(
           color: Colors.yellow[200],
         ),
-        AnimatedPositioned(
-            duration: const Duration(milliseconds: 500),
-            top: posy,
-            left: posx,
-            child: cursor.createCursor()),
-        // AnimatedPositioned(
-        //   duration: const Duration(milliseconds: 500),
-        //   top: Provider.of<GameStatus>(context, listen: false).started == true
-        //       ? Screen.screenHeight - 200
-        //       : Screen.screenHeight + 200,
-        //   left: Screen.screenWidth / 2 + 50,
-        //   child: RaisedButton(
-        //     textColor: Colors.white,
-        //     color: Colors.green,
-        //     onPressed: nextLevel(),
-        //     child: Text('next'),
-        //   ),
-        // ),
-        // AnimatedPositioned(
-        //   duration: const Duration(milliseconds: 500),
-        //   top: Provider.of<GameStatus>(context, listen: false).started == true
-        //       ? Screen.screenHeight - 200
-        //       : Screen.screenHeight + 200,
-        //   left: Screen.screenWidth / 2 - 110,
-        //   child: RaisedButton(
-        //     textColor: Colors.white,
-        //     color: Colors.green,
-        //     onPressed: playAgain(),
-        //     child: Text('play again'),
-        //   ),
-        // )
+        AnimatedPositioned(duration: const Duration(milliseconds: 500), top: posy, left: posx, child: cursor.createCursor()),
       ]),
     );
   }
@@ -85,12 +55,13 @@ class _TrackFingerState extends State<TrackFinger> {
     setState(() {
       double rEdge = calculateSpaceToRightEdges();
       posx = localOffset.dx >= rEdge ? rEdge : localOffset.dx;
+      Provider.of<GameStatus>(context, listen: false).setCursorPosition(posx, posy);
     });
   }
 
   /// محاسبه فاصله ای که کرسر نباید بیشتر از آن به سمت راست برود. چون از صفحه خارح می شود
   calculateSpaceToRightEdges() {
-    double rightEdge = MediaQuery.of(context).size.width - 100.toDouble();
+    double rightEdge = MediaQuery.of(context).size.width - cursor.width.toDouble();
     return rightEdge;
   }
 

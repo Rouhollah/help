@@ -9,7 +9,7 @@ import 'package:help/table_screen.dart';
 import 'package:help/trackFinger.dart';
 
 import 'movement.dart';
-import 'play.dart';
+import 'play2.dart';
 
 void main() {
   runApp(MyApp());
