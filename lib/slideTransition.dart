@@ -12,8 +12,7 @@ class SlideWidget extends StatefulWidget {
   _SlideWidgetState createState() => _SlideWidgetState();
 }
 
-class _SlideWidgetState extends State<SlideWidget>
-    with SingleTickerProviderStateMixin {
+class _SlideWidgetState extends State<SlideWidget> with SingleTickerProviderStateMixin {
   Animation<Offset> _animationOffset;
   Tween<Offset> _tweenOffset;
   AnimationController _animationController;
@@ -24,7 +23,8 @@ class _SlideWidgetState extends State<SlideWidget>
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
-    print(key);
+    //print(key);
+    GlobalKey ballKey = ball.key;
     new Future.delayed(Duration.zero, () {
       RenderBox rb = key.currentContext.findRenderObject();
       final Offset localOffset = rb.localToGlobal(Offset.zero);
@@ -32,44 +32,41 @@ class _SlideWidgetState extends State<SlideWidget>
       print("localDy:${localOffset.dy}");
       print("localOffset:$localOffset");
     });
-    _animationController =
-        AnimationController(duration: Duration(seconds: 1), vsync: this);
-    _tweenOffset = Tween<Offset>(
-        begin: Offset(19, 31.888),
-        end: Offset(
-            (Screen.screenWidth - (Screen.screenWidth - 100)) / ball.width,
-            105 / ball.width)
-        // begin: Offset.zero,
-        // end: Offset(19, 31.888)
-        );
+    _animationController = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    _tweenOffset =
+        Tween<Offset>(begin: Offset(19, 31.888), end: Offset((Screen.screenWidth - (Screen.screenWidth - 100)) / ball.width, 105 / ball.width)
+            // begin: Offset.zero,
+            // end: Offset(19, 31.888)
+            );
     _animationOffset = _tweenOffset.animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
-    );
+    )..addListener(() {
+        RenderBox renderBall = ballKey.currentContext.findRenderObject();
+        final positionBall = renderBall.localToGlobal(Offset.zero);
+        print(positionBall.dy);
+        //print(150.0 / ball.width);
+        if (positionBall.dy == 150.0) {
+          _animationController.stop(canceled: true);
+        }
+      });
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("width screen:${MediaQuery.of(context).size.width}");
-    print("height screen:${MediaQuery.of(context).size.height}");
-    print("PixelRatio:${window.devicePixelRatio}");
-    print("عرض فیزیکی صفحه:${window.physicalSize.width}");
-    print("ارتفاع فیزیکی صفحه:${window.physicalSize.height}");
-    print("عرض متناسب:${MediaQuery.of(context).size.width / ball.width}");
-    print("ارتفاع متناسب:${MediaQuery.of(context).size.height / ball.width}");
+    //print("width screen:${MediaQuery.of(context).size.width}");
+    //print("height screen:${MediaQuery.of(context).size.height}");
+    //print("PixelRatio:${window.devicePixelRatio}");
+    //print("عرض فیزیکی صفحه:${window.physicalSize.width}");
+    //print("ارتفاع فیزیکی صفحه:${window.physicalSize.height}");
+    //print("عرض متناسب:${MediaQuery.of(context).size.width / ball.width}");
+    //print("ارتفاع متناسب:${MediaQuery.of(context).size.height / ball.width}");
 
     return Container(
       decoration: BoxDecoration(border: Border.all(color: Colors.yellow)),
       child: Stack(children: [
-        Positioned(
-            top: 0,
-            left: 100,
-            child:
-                Container(key: key, width: 50, height: 50, color: Colors.red)),
-        Positioned(
-            top: 55,
-            left: 100,
-            child: Container(width: 50, height: 50, color: Colors.green)),
+        Positioned(top: 0, left: 100, child: Container(key: key, width: 50, height: 50, color: Colors.red)),
+        Positioned(top: 55, left: 100, child: Container(width: 50, height: 50, color: Colors.green)),
         SlideTransition(position: _animationOffset, child: ball.createBall()),
       ]),
     );

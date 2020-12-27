@@ -8,16 +8,14 @@ class StaggerDemo extends StatefulWidget {
   _StaggerDemoState createState() => _StaggerDemoState();
 }
 
-class _StaggerDemoState extends State<StaggerDemo>
-    with TickerProviderStateMixin {
+class _StaggerDemoState extends State<StaggerDemo> with TickerProviderStateMixin {
   AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+    _controller = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
   }
 
   @override

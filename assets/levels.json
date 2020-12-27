@@ -10,7 +10,7 @@
                     "type": "natural"
                 },
                 {
-                    "x": 177,
+                    "x": 100,
                     "y": 20,
                     "type": "stone"
                 },
@@ -20,8 +20,23 @@
                     "type": "natural"
                 },
                 {
+                    "x": 177,
+                    "y": 200,
+                    "type": "natural"
+                },
+                {
+                    "x": 160,
+                    "y": 250,
+                    "type": "natural"
+                },
+                {
                     "x": 227,
                     "y": 20,
+                    "type": "fire"
+                },
+                {
+                    "x": 227,
+                    "y": 300,
                     "type": "fire"
                 }
             ]

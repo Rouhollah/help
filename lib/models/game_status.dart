@@ -21,7 +21,6 @@ class GameStatus extends ChangeNotifier {
   void gameStart(firstShoot) {
     this.firstShoot = firstShoot;
     this.started = firstShoot;
-    print("gameStart.started:${this.started}");
     notifyListeners();
   }
 

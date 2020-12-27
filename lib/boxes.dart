@@ -26,9 +26,7 @@ class _BoxesState extends State<Boxes> {
   void initState() {
     super.initState();
     var g = Provider.of<GameStatus>(context, listen: false);
-    Level level = g.levelsList.firstWhere(
-        (element) => element.level == widget.level.level,
-        orElse: () => null);
+    Level level = g.levelsList.firstWhere((element) => element.level == widget.level.level, orElse: () => null);
 
     // اضافه نشده بود ، اضافه کن provider قبلا به level اگر
     if (level == null) {
@@ -50,7 +48,6 @@ class _BoxesState extends State<Boxes> {
 
   Widget constantBox() {
     final game = Provider.of<GameStatus>(context);
-    print("board");
     // نمایش باکسهای هر مرحله
     // for (var item in game.getBoxes()) {
     //   var positioned = new Positioned(
@@ -63,10 +60,7 @@ class _BoxesState extends State<Boxes> {
         lst = [];
         Positioned positioned;
         for (var item in boxes) {
-          positioned = new Positioned(
-              top: item.position.dy,
-              left: item.position.dx,
-              child: item.create());
+          positioned = new Positioned(top: item.position.dy, left: item.position.dx, child: item.create());
           lst.add(positioned);
         }
         return Container(

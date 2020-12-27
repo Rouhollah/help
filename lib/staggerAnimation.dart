@@ -109,25 +109,20 @@ class _PhotoItemState extends State<PhotoItem> with TickerProviderStateMixin {
 
     _oldPhoto = widget.photo;
 
-    _selectController = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
+    _selectController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
     final Animation<double> easeSelection = CurvedAnimation(
       parent: _selectController,
       curve: Curves.easeIn,
     );
-    _stackScaleAnimation =
-        Tween<double>(begin: 1.0, end: 0.85).animate(easeSelection);
-    _checkScaleAnimation =
-        Tween<double>(begin: 0.0, end: 1.25).animate(easeSelection);
-    _checkSelectedOpacityAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(easeSelection);
+    _stackScaleAnimation = Tween<double>(begin: 1.0, end: 0.85).animate(easeSelection);
+    _checkScaleAnimation = Tween<double>(begin: 0.0, end: 1.25).animate(easeSelection);
+    _checkSelectedOpacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(easeSelection);
     _imagePositionAnimation = RelativeRectTween(
       begin: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
       end: const RelativeRect.fromLTRB(12.0, 12.0, 12.0, 12.0),
     ).animate(easeSelection);
 
-    _replaceController = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
+    _replaceController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
 
     final Animation<double> easeInsert = CurvedAnimation(
       parent: _replaceController,
@@ -163,8 +158,7 @@ class _PhotoItemState extends State<PhotoItem> with TickerProviderStateMixin {
   void didUpdateWidget(PhotoItem oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.photo != oldWidget.photo)
-      _replace(oldWidget.photo, widget.photo);
+    if (widget.photo != oldWidget.photo) _replace(oldWidget.photo, widget.photo);
     if (widget.selected != oldWidget.selected) _select();
   }
 
@@ -272,16 +266,14 @@ class ImagesDemo extends StatefulWidget {
   _ImagesDemoState createState() => _ImagesDemoState();
 }
 
-class _ImagesDemoState extends State<ImagesDemo>
-    with SingleTickerProviderStateMixin {
+class _ImagesDemoState extends State<ImagesDemo> with SingleTickerProviderStateMixin {
   static const double _photoBlockHeight = 576.0;
 
   int _selectedPhotoIndex;
 
   void _selectPhoto(int photoIndex) {
     setState(() {
-      _selectedPhotoIndex =
-          photoIndex == _selectedPhotoIndex ? null : photoIndex;
+      _selectedPhotoIndex = photoIndex == _selectedPhotoIndex ? null : photoIndex;
     });
   }
 
@@ -293,8 +285,7 @@ class _ImagesDemoState extends State<ImagesDemo>
     });
   }
 
-  Widget _buildPhotoBlock(
-      BuildContext context, int blockIndex, int blockFrameCount) {
+  Widget _buildPhotoBlock(BuildContext context, int blockIndex, int blockFrameCount) {
     final List<Widget> rows = [];
 
     int startPhotoIndex = blockIndex * blockFrameCount;
@@ -338,9 +329,7 @@ class _ImagesDemoState extends State<ImagesDemo>
     timeDilation = 5.0; // 1.0 is normal animation speed.
 
     // Number of PhotoBlockFrames in each _photoBlockHeight block
-    final int photoBlockFrameCount = photoBlockFrames
-        .map((List<PhotoFrame> l) => l.length)
-        .reduce((s, n) => s + n);
+    final int photoBlockFrameCount = photoBlockFrames.map((List<PhotoFrame> l) => l.length).reduce((s, n) => s + n);
 
     return Scaffold(
       appBar: AppBar(

@@ -2,15 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:help/boxes.dart';
 import 'package:help/models/cursor.dart';
-import 'package:help/models/game_status.dart';
 import 'package:help/models/level.dart';
-import 'package:help/movement.dart';
 import 'package:help/play.dart';
-import 'package:help/repository/load_level_repo.dart';
 import 'package:help/services/load_level_service.dart';
-import 'package:provider/provider.dart';
 
 class Board extends StatefulWidget {
   @override
@@ -49,8 +44,7 @@ class _BoardState extends State<Board> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             // Future hasn't finished yet, return a placeholder
-            return //Align(alignment: Alignment.center, child: Text('Loading'));
-                CircularProgressIndicator();
+            return Align(alignment: Alignment.center, child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text("${snapshot.error}"));
           } else {
